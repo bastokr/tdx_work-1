@@ -121,7 +121,7 @@ class MyWindow(QMainWindow):
 
         splitter.addWidget(self.properties_widget)
 
-        self.lefttree.closeApp.connect(self.properties_widget.message)
+        self.lefttree.attributeChange.connect( self.properties_widget.message   )
 
  
  

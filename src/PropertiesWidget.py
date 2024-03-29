@@ -59,6 +59,8 @@ class PropertiesWidget(QWidget):
         layout = QVBoxLayout()
         layout.addWidget(groupBox)
         self.setLayout(layout)
-    def message(self):
-        print("message")        
+    def message(x: object, y: str,z:str):
+        print(x)    
+        print(y)  
+        print(z)    
  

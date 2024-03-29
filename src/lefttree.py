@@ -11,7 +11,7 @@ import lib.Databases as Databases
 
 class LeftTree(QWidget):
 
-    closeApp = pyqtSignal()
+    attributeChange = pyqtSignal(int, str,str)
 
     def __init__(self):
         super().__init__() 
@@ -53,7 +53,7 @@ class LeftTree(QWidget):
     def onItemClicked(self, it, col):
         print(it, col, it.text(col))
         print("mousePressEvent left Page")
-        self.closeApp.emit()
+        self.attributeChange.emit(9999, "테스트","TET")
 
 
 
