@@ -9,6 +9,8 @@ from CustomWidget import CustomWidget
 from PropertiesWidget import PropertiesWidget
 from lefttree import LeftTree
 from main import MainList
+from PyQt5.QtCore import pyqtSignal, QObject
+
  
  
 
@@ -20,6 +22,7 @@ class MyWindow(QMainWindow):
         self.menubar = self.menuBar()
         self.menubar.setNativeMenuBar(False)
         self.setContentsMargins(0, 0, 0, 0)
+        self.setWindowIcon(QIcon('web.png'))
 
         # file menu action
         self.new_action = QAction("New")
@@ -107,6 +110,7 @@ class MyWindow(QMainWindow):
         #left_widget = QTextEdit()
         right_widget = QLabel("Layer 2")
         self.lefttree.setGeometry(0,0,100,1000)  
+         
         splitter.addWidget(self.lefttree)
         
         splitter.addWidget(self.main)
@@ -114,13 +118,18 @@ class MyWindow(QMainWindow):
 
 
         self.setCentralWidget(splitter)
-        properties_widget = PropertiesWidget()
+        self.properties_widget = PropertiesWidget()
 
-        splitter.addWidget(properties_widget)
+        splitter.addWidget(self.properties_widget)
+
+        self.lefttree.closeApp.connect(self.properties_widget.message)
+
+ 
  
 
-    
-
+    def mousePressEvent(self, e): 
+        print("mousePressEvent")
+         
 
     def setting(self):
         print('setting toolbar clicked')

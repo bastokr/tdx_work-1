@@ -1,7 +1,8 @@
  
  
 from PyQt5.QtWidgets import *
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore,QtGui, QtWidgets
+from PyQt5.QtCore import pyqtSignal 
 
 import psycopg2
 
@@ -9,6 +10,9 @@ from CRUD import CRUD
 import Databases
 
 class LeftTree(QWidget):
+
+    closeApp = pyqtSignal()
+
     def __init__(self):
         super().__init__() 
         self.setupUI()
@@ -40,10 +44,16 @@ class LeftTree(QWidget):
             ChildA.setText(1,data[0]) 
         
         self.tree.itemClicked.connect(self.onItemClicked)
+         
+
+     
+        
 
     @QtCore.pyqtSlot(QtWidgets.QTreeWidgetItem, int)
     def onItemClicked(self, it, col):
         print(it, col, it.text(col))
+        print("mousePressEvent left Page")
+        self.closeApp.emit()
 
 
 
