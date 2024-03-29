@@ -4,12 +4,12 @@ from PyQt5.QtGui import QIcon, QPalette, QColor
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtWidgets import *
-
-from CustomWidget import CustomWidget
-from src.PropertiesWidget import PropertiesWidget
-from src.lefttree import LeftTree
-from src.main_view import MainList
+ 
+from PropertiesWidget import PropertiesWidget
+from lefttree import LeftTree 
 from PyQt5.QtCore import pyqtSignal, QObject
+
+from main_view import MainList
 
  
  
@@ -97,8 +97,7 @@ class MyWindow(QMainWindow):
         #btn2 = QPushButton("Button2")
 
         # Create custom widget
-        self.custom_widget = CustomWidget()
-
+       
         self.lefttree = LeftTree()
         self.main = MainList()
   

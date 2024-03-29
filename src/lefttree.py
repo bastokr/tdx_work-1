@@ -6,8 +6,8 @@ from PyQt5.QtCore import pyqtSignal
 
 import psycopg2
 
-from CRUD import CRUD
-import Databases
+from lib.CRUD import CRUD
+import lib.Databases as Databases
 
 class LeftTree(QWidget):
 
