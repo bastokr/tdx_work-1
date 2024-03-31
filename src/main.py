@@ -11,7 +11,8 @@ from PyQt5.QtCore import pyqtSignal, QObject
 
 from main_view import MainList
 
- 
+from PyQt5.QtWidgets import QDialog
+#출처: https://spec.tistory.com/422 [Code Hunter:티스토리] 
  
 
 class MyWindow(QMainWindow):
@@ -27,6 +28,7 @@ class MyWindow(QMainWindow):
         # file menu action
         self.new_action = QAction("New")
         self.quit_action = QAction("Quit")
+        self.table_action = QAction("Table")
         self.quit_action.triggered.connect(self.close)
 
         # help menu action
@@ -35,10 +37,12 @@ class MyWindow(QMainWindow):
         self.license_action = QAction("View License")
 
         # file menu
-        file_menu = self.menubar.addMenu("File")
-        file_menu.addAction(self.new_action)
+        file_menu = self.menubar.addMenu("DataBase")
+        file_menu.addAction(self.table_action)
         file_menu.addSeparator()
         file_menu.addAction(self.quit_action)
+        
+        self.table_action.triggered.connect(self.dialog_open);
 
         file_menu = self.menubar.addMenu("Edit")
         file_menu.addAction(self.new_action)
@@ -122,8 +126,26 @@ class MyWindow(QMainWindow):
         splitter.addWidget(self.properties_widget)
 
         self.lefttree.attributeChange.connect( self.properties_widget.message   )
+        self.dialog = QDialog() 
 
- 
+    # 버튼 이벤트 함수
+    def dialog_open(self):
+        # 버튼 추가
+        btnDialog = QPushButton("OK", self.dialog)
+        btnDialog.move(100, 100)
+        btnDialog.clicked.connect(self.dialog_close)
+
+        # QDialog 세팅
+        self.dialog.setWindowTitle('Dialog')
+        self.dialog.setWindowModality(Qt.ApplicationModal)
+        self.dialog.resize(300, 200)
+        self.dialog.show()
+
+    # Dialog 닫기 이벤트
+    def dialog_close(self):
+        self.dialog.close()
+
+#출처: https://spec.tistory.com/422 [Code Hunter:티스토리]
  
 
     def mousePressEvent(self, e): 
@@ -135,6 +157,11 @@ class MyWindow(QMainWindow):
 
     def envelope(self):
         print('envelope toolbar clicked')
+        
+        # About 버튼 클릭 이벤트
+    def About_event(self) :
+        QMessageBox.about(self,'About Title','About Message')
+#출처: https://mr-doosun.tistory.com/29 [고졸 입니다만..:티스토리]
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
