@@ -15,39 +15,34 @@ class PropertiesWidget(QWidget):
 
         # Add different types of input widgets
         label1 = QLabel("테이블명:")
-        textEdit = QLineEdit()
+        self.textEdit = QLineEdit()
 
         label1_2 = QLabel("속성:")
-        textEdit1_2 = QLineEdit()
+        self.textEdit1_2 = QLineEdit()
 
         label2 = QLabel("타입:")
-        spinBox = QSpinBox()
+        self.spinBox = QSpinBox()
 
         label3 = QLabel("Boolean  :")
-        checkBox = QCheckBox()
+        self.checkBox = QCheckBox()
 
         label4 = QLabel("Options  :") 
-        comboBox = QComboBox()
-        comboBox.addItems(["Option 1", "Option 2", "Option 3"])
+        self.comboBox = QComboBox()
+        self.comboBox.addItems(["Option 1", "Option 2", "Option 3"])
 
         label5 = QLabel("label5")  
         label6 = QLabel("label6")  
-        label7 = QLabel("label7")  
-        
-
-
-
-
+        label7 = QLabel("label7")    
         groupBoxLayout.addWidget(label1)
-        groupBoxLayout.addWidget(textEdit)
+        groupBoxLayout.addWidget(self.textEdit)
         groupBoxLayout.addWidget(label1_2)
-        groupBoxLayout.addWidget(textEdit1_2)
+        groupBoxLayout.addWidget(self.textEdit1_2)
         groupBoxLayout.addWidget(label2)
-        groupBoxLayout.addWidget(spinBox)
+        groupBoxLayout.addWidget(self.spinBox)
         groupBoxLayout.addWidget(label3)
-        groupBoxLayout.addWidget(checkBox)
+        groupBoxLayout.addWidget(self.checkBox)
         groupBoxLayout.addWidget(label4)
-        groupBoxLayout.addWidget(comboBox)
+        groupBoxLayout.addWidget(self.comboBox)
         groupBoxLayout.addWidget(label5) 
         groupBoxLayout.addWidget(label6) 
         groupBoxLayout.addWidget(label7) 
@@ -59,8 +54,9 @@ class PropertiesWidget(QWidget):
         layout = QVBoxLayout()
         layout.addWidget(groupBox)
         self.setLayout(layout)
-    def message(x: object, y: str,z:str):
-        print(x)    
+    def message(self,o: object, y: str,z:str):
+        print(o)    
         print(y)  
-        print(z)    
+        self.textEdit1_2.setText(z)
+        print(z) 
  

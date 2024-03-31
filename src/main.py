@@ -22,7 +22,7 @@ class MyWindow(QMainWindow):
         self.menubar = self.menuBar()
         self.menubar.setNativeMenuBar(False)
         self.setContentsMargins(0, 0, 0, 0)
-        self.setWindowIcon(QIcon('web.png'))
+        self.setWindowIcon(QIcon('src/img/web.png'))
 
         # file menu action
         self.new_action = QAction("New")
@@ -78,13 +78,13 @@ class MyWindow(QMainWindow):
         help_menu.addAction(self.doc_action)
         help_menu.addAction(self.release_action)
         help_menu.addAction(self.license_action)
-        self.home_action = QAction(QIcon("home.png"), 'home')
+        self.home_action = QAction(QIcon("src/img/home.png"), 'home')
         self.home_action.triggered.connect(self.close)
 
-        self.setting_action = QAction(QIcon("settings.png"), 'settings')
+        self.setting_action = QAction(QIcon("src/img/settings.png"), 'settings')
         self.setting_action.triggered.connect(self.setting)
 
-        self.envelope_action = QAction(QIcon("envelope.png"), 'envelope')
+        self.envelope_action = QAction(QIcon("src/img/envelope.png"), 'envelope')
         self.envelope_action.triggered.connect(self.envelope)
 
         self.toolbar = self.addToolBar('title')
