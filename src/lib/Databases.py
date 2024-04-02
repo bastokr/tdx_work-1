@@ -2,7 +2,7 @@ import psycopg2
 
 class Databases:
     def __init__(self):
-        self.db = psycopg2.connect(host='211.232.75.41', dbname='logis_db', user='logis_user', password='logis_pwd', port=5433)
+        self.db = psycopg2.connect(host='211.232.75.41', dbname='tdx_db', user='tdx_user', password='tdx_password', port=5433)
         self.cursor = self.db.cursor()
 
     def __del__(self):

@@ -36,12 +36,12 @@ class LeftTree(QWidget):
  
            
         db = CRUD() 
-        result = db.readDB( table="menu_mgmt", colum="*")
+        result = db.readDB( table="tdx_table", colum="*")
         i =0
         for data in result:
             ChildA=QTreeWidgetItem(itemA)
             ChildA.setText(0,data[1])
-            ChildA.setText(1,data[0]) 
+            ChildA.setText(1,data[2]) 
         
         self.tree.itemClicked.connect(self.onItemClicked)
          
