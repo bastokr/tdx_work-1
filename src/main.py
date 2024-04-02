@@ -13,6 +13,9 @@ from main_view import MainList
 
 from PyQt5.QtWidgets import QDialog
 #출처: https://spec.tistory.com/422 [Code Hunter:티스토리] 
+
+import qdarkstyle
+
  
 
 class MyWindow(QMainWindow):
@@ -170,6 +173,7 @@ if __name__ == "__main__":
     palette = QPalette()
     palette.setColor(QPalette.HighlightedText, Qt.black)
     app.setPalette(palette)
+    app.setStyleSheet(qdarkstyle.load_stylesheet(qt_api='pyqt5'))
 
     window = MyWindow()
     window.show()
