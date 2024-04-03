@@ -29,6 +29,7 @@ class MyWindow(QMainWindow):
         self.menubar.setNativeMenuBar(False)
         self.setContentsMargins(0, 0, 0, 0)
         self.setWindowIcon(QIcon('src/img/web.png'))
+         
 
         # file menu action
         self.new_action = QAction("New")
@@ -155,7 +156,9 @@ class MyWindow(QMainWindow):
         layout.addWidget(setting) 
         self.dialog.setWindowModality(Qt.ApplicationModal)
         self.dialog.resize(800, 500)
+        setting.closeDialog.connect(self.dialog.close)
         self.dialog.show()
+        
         
 
     # Dialog 닫기 이벤트
@@ -185,7 +188,7 @@ if __name__ == "__main__":
 
     app.setStyle("Fusion")
     palette = QPalette()
-    palette.setColor(QPalette.HighlightedText, Qt.black)
+    #palette.setColor(QPalette.HighlightedText, Qt.black)
     app.setPalette(palette)
     #app.setStyleSheet(qdarkstyle.load_stylesheet(qt_api='pyqt5'))
 
