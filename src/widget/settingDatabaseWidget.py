@@ -2,7 +2,7 @@ import sys
 from PyQt5.QtWidgets import * 
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
-class PropertiesWidget(QWidget):
+class SettingDatabaseWidget(QWidget):
     def __init__(self):
         super().__init__()
 
@@ -22,17 +22,13 @@ class PropertiesWidget(QWidget):
 
         label2 = QLabel("타입:")
         self.spinBox = QSpinBox()
-
         label3 = QLabel("Boolean  :")
         self.checkBox = QCheckBox()
 
         label4 = QLabel("Options  :") 
         self.comboBox = QComboBox()
         self.comboBox.addItems(["Option 1", "Option 2", "Option 3"])
-
-        label5 = QLabel("label5")  
-        label6 = QLabel("label6")  
-        label7 = QLabel("label7")    
+     
         groupBoxLayout.addWidget(label1)
         groupBoxLayout.addWidget(self.textEdit)
         groupBoxLayout.addWidget(label1_2)
@@ -42,10 +38,7 @@ class PropertiesWidget(QWidget):
         groupBoxLayout.addWidget(label3)
         groupBoxLayout.addWidget(self.checkBox)
         groupBoxLayout.addWidget(label4)
-        groupBoxLayout.addWidget(self.comboBox)
-        groupBoxLayout.addWidget(label5) 
-        groupBoxLayout.addWidget(label6) 
-        groupBoxLayout.addWidget(label7) 
+        groupBoxLayout.addWidget(self.comboBox) 
         groupBoxLayout.addStretch(1) 
 
 

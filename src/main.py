@@ -16,6 +16,8 @@ from PyQt5.QtWidgets import QDialog
 
 import qdarkstyle
 
+from widget.settingDatabaseWidget import SettingDatabaseWidget
+
  
 
 class MyWindow(QMainWindow):
@@ -134,15 +136,27 @@ class MyWindow(QMainWindow):
     # 버튼 이벤트 함수
     def dialog_open(self):
         # 버튼 추가
-        btnDialog = QPushButton("OK", self.dialog)
-        btnDialog.move(100, 100)
-        btnDialog.clicked.connect(self.dialog_close)
+        # btnDialog = QPushButton("OK", self.dialog)
+        # btnDialog.move(100, 100)
+        # btnDialog.clicked.connect(self.dialog_close)
 
-        # QDialog 세팅
-        self.dialog.setWindowTitle('Dialog')
+        # # QDialog 세팅
+        # self.dialog.setWindowTitle('Dialog')
+        # self.dialog.setWindowModality(Qt.ApplicationModal)
+        # self.dialog.resize(300, 200)
+        # self.dialog.show()
+         
+        self.dialog  = QDialog()
+        self.dialog.setWindowTitle('My Dialog')
+        layout = QHBoxLayout(self.dialog ) 
+        
+        preview = QLabel('Preview', self.dialog )
+        setting = SettingDatabaseWidget()
+        layout.addWidget(setting) 
         self.dialog.setWindowModality(Qt.ApplicationModal)
-        self.dialog.resize(300, 200)
+        self.dialog.resize(800, 500)
         self.dialog.show()
+        
 
     # Dialog 닫기 이벤트
     def dialog_close(self):
