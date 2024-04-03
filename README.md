@@ -19,3 +19,6 @@
 
  odata 스크립트 만들기 
 
+
+pip install qdarkstyle
+
