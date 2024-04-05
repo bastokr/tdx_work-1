@@ -5,6 +5,9 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QHBoxLayout
 from PyQt5.QtCore import pyqtSignal, QObject
 
+from lib.CRUD import CRUD
+import lib.Databases as Databases
+
 class SettingDatabaseWidget(QDialog):
     closeDialog = pyqtSignal() # type: ignore
 
@@ -38,6 +41,7 @@ class SettingDatabaseWidget(QDialog):
         btn1.setCheckable(True)
         btn1.toggle()
         btn1.setFixedSize(100, 30)  # Set fixed size for the button
+        btn1.clicked.connect(self.addTable)
 
         btn2 = QPushButton(self)
         btn2.setText('닫기&2')
@@ -76,6 +80,10 @@ class SettingDatabaseWidget(QDialog):
     def close_dialog(self):
         # Emit the closeDialog signal when the close button is clicked
         self.closeDialog.emit()
+    
+    def addTable(self):
+        db = CRUD() 
+        result = db.insertDB( table="tdx_table",)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
