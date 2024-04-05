@@ -22,21 +22,14 @@ class SettingDatabaseWidget(QDialog):
         
         # Add different types of input widgets
         label1 = QLabel("테이블명:")
-        self.textEdit = QLineEdit()
+        self.tableId = QLineEdit()
 
         label1_2 = QLabel("속성:")
-        self.textEdit1_2 = QLineEdit()
+        self.tableName = QLineEdit()
 
-        label2 = QLabel("타입:")
-        self.spinBox = QSpinBox()
-        label3 = QLabel("Boolean  :")
-        self.checkBox = QCheckBox()
-
-        label4 = QLabel("Options  :") 
-        self.comboBox = QComboBox()
-        self.comboBox.addItems(["Option 1", "Option 2", "Option 3"])
-        
-        
+        label2 = QLabel("설명:")
+        self.textDescription = QLineEdit() 
+         
         btn1 = QPushButton('&테이블생성', self)
         btn1.setCheckable(True)
         btn1.toggle()
@@ -55,15 +48,11 @@ class SettingDatabaseWidget(QDialog):
         hbox.addStretch(1)  # Add stretch to center align buttons
 
         groupBoxLayout.addWidget(label1)
-        groupBoxLayout.addWidget(self.textEdit)
+        groupBoxLayout.addWidget(self.tableId)
         groupBoxLayout.addWidget(label1_2)
-        groupBoxLayout.addWidget(self.textEdit1_2)
+        groupBoxLayout.addWidget(self.tableName)
         groupBoxLayout.addWidget(label2)
-        groupBoxLayout.addWidget(self.spinBox)
-        groupBoxLayout.addWidget(label3)
-        groupBoxLayout.addWidget(self.checkBox)
-        groupBoxLayout.addWidget(label4)
-        groupBoxLayout.addWidget(self.comboBox) 
+        groupBoxLayout.addWidget(self.textDescription) 
         
         groupBoxLayout.addLayout(hbox)
         groupBoxLayout.addStretch(1) 
@@ -82,8 +71,18 @@ class SettingDatabaseWidget(QDialog):
         self.closeDialog.emit()
     
     def addTable(self):
-        db = CRUD() 
-        result = db.insertDB( table="tdx_table",)
+        table_id = self.tableId.text()
+        table_name = self.tableName.text()
+        description = self.textDescription.text()
+
+        if not table_id:
+            QMessageBox.about(self, 'About Title', 'Table ID cannot be empty.')
+            return
+
+        db = CRUD()
+        db.insertDB( table="tdx_table", 
+                    colum="id, name, description",data=(table_id, table_name, description))
+    
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

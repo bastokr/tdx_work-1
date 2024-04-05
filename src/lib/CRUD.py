@@ -1,8 +1,8 @@
 from lib.Databases import Databases
 
 class CRUD(Databases):
-    def insertDB(self, schema, table, colum, data):
-        sql = "INSERT INTO {}.{} ({}) VALUES (%s);".format(schema, table, colum)
+    def insertDB(self,  table, colum, data):
+        sql = "INSERT INTO {} ({}) VALUES %s;".format( table, colum)
         try:
             self.cursor.execute(sql, (data,))
             self.db.commit()
