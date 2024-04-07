@@ -57,6 +57,6 @@ class PropertiesWidget(QWidget):
     def message(self,o: object, y: str,z:str):
         print(o)    
         print(y)  
-        self.textEdit1_2.setText(z)
+        self.textEdit1_2.setText(y)
         print(z) 
  

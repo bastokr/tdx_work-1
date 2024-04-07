@@ -24,24 +24,26 @@ class LeftTree(QWidget):
         #Tree 생성
         self.tree = QTreeWidget(self)
         self.tree.resize(500, 1000)        
-        self.tree.setColumnCount(2)
+        self.tree.setColumnCount(3)
         self.tree.setColumnWidth(0,250)
-        self.tree.setHeaderLabels(["구분","속성" ])
+        self.tree.setHeaderLabels(["구분","속성","id" ])
 
         #Tree에 항목추가 (TreeWidgetItem 추가)
         itemA = QTreeWidgetItem(self.tree)
         itemA.setText(0,"테이블")
-        itemA.setText(1,"테이블") 
+        itemA.setText(1,"") 
+        itemA.setText(2,"") 
  
  
            
         db = CRUD() 
-        result = db.readDB( table="tdx_table", colum="*")
+        self.result = db.readDB( table="tdx_table", colum="*")
         i =0
-        for data in result:
+        for data in self.result:
             ChildA=QTreeWidgetItem(itemA)
             ChildA.setText(0,data[1])
             ChildA.setText(1,data[2]) 
+            ChildA.setText(2,str(data[0])) 
         
         self.tree.itemClicked.connect(self.onItemClicked)
          
@@ -53,7 +55,7 @@ class LeftTree(QWidget):
     def onItemClicked(self, it, col):
         print(it, col, it.text(col))
         print("mousePressEvent left Page")
-        self.attributeChange.emit(9999, it.text(0),it.text(1))
+        self.attributeChange.emit(int(it.text(2)), it.text(0),it.text(1))
 
 
 

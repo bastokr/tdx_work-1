@@ -132,6 +132,7 @@ class MyWindow(QMainWindow):
         splitter.addWidget(self.properties_widget)
 
         self.lefttree.attributeChange.connect( self.properties_widget.message   )
+        self.lefttree.attributeChange.connect(self.main.message)
         self.dialog = QDialog() 
 
     # 버튼 이벤트 함수

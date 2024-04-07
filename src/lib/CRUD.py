@@ -17,7 +17,16 @@ class CRUD(Databases):
             return result
         except Exception as e:
             print("Read DB error:", e)  
-        
+
+    def whereDB(self,  table, colum ,where):
+        sql = "SELECT {} FROM  {} WHERE {} ".format(colum,   table , where)
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchall()
+            return result
+        except Exception as e:
+            print("Read DB error:", e)  
+                    
     def updateDB(self, schema, table, colum, value, condition):
         sql = "UPDATE {}.{} SET {}=%s WHERE {}=%s".format(schema, table, colum, colum)
         try:
