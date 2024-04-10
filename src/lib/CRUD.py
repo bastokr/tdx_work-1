@@ -9,6 +9,14 @@ class CRUD(Databases):
         except Exception as e:
             print("Insert DB error:", e)
     
+    def insertDBSeq(self, table, colum, data,seq):
+        sql = "INSERT INTO {} ({}) VALUES %s;".format(table, colum)
+        try:
+            self.cursor.execute(sql, (data,))
+            self.db.commit()
+        except Exception as e:
+            print("Insert DB error:", e)
+        
     def readDB(self,  table, colum):
         sql = "SELECT {} FROM  {}".format(colum,   table)
         try:
