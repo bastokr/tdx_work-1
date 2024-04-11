@@ -44,13 +44,16 @@ class MainList(QWidget):
         self.btn1.setFixedSize(100, 30)  # Set fixed size for the button
         self.btn1.clicked.connect(self.dialog_open)
         
- 
- 
-
-        
+        self.btn2 = QPushButton('&컬럼삭제', self)
+        self.btn2.setCheckable(True)
+        self.btn2.toggle()
+        self.btn2.setFixedSize(100, 30)  # Set fixed size for the button
+        self.btn2.clicked.connect(self.delete_row)
+      
         self.headerLayer.addWidget(self.label1)
         
         self.headerLayer.addWidget(self.btn1)
+        self.headerLayer.addWidget(self.btn2)
         layout.addLayout(self.headerLayer)
         layout.addWidget(self.tableWidget) 
         
@@ -164,7 +167,16 @@ class MainList(QWidget):
             print("No item found at row:", row, "and column:", column)
             
 
-        
+    def delete_row(self):
+        #db = CRUD() 
+        #db.deleteDB()     
+        #self.tableWidget.selectRow
+        #db.deleteDB(  table='tdx_column', condition="id != '"++"'")
+        selected_row = self.tableWidget.currentRow()
+        if selected_row >= 0:
+            self.tableWidget.removeRow(selected_row)
+        else:
+            print("No row selected.")
             
         
         #lastState = item;

@@ -55,7 +55,8 @@ class LeftTree(QWidget):
     def onItemClicked(self, it, col):
         print(it, col, it.text(col))
         print("mousePressEvent left Page")
-        self.attributeChange.emit(int(it.text(2)), it.text(0),it.text(1))
+        if(it.text(0)!='테이블'):
+            self.attributeChange.emit(int(it.text(2)), it.text(0),it.text(1))
 
 
 

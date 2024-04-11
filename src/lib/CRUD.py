@@ -43,8 +43,8 @@ class CRUD(Databases):
         except Exception as e:
             print("Update DB error:", e)
 
-    def deleteDB(self, schema, table, condition):
-        sql = "DELETE FROM {}.{} WHERE {};".format(schema, table, condition)
+    def deleteDB(self, table, condition):
+        sql = "DELETE FROM {} WHERE {};".format(table, condition)
         try:
             self.cursor.execute(sql)
             self.db.commit()
