@@ -12,7 +12,7 @@ from PyQt5.QtCore import pyqtSignal, QObject
 from main_view import MainList
 
 from PyQt5.QtWidgets import QDialog
-#출처: https://spec.tistory.com/422 [Code Hunter:티스토리] 
+
 
 #import qdarkstyle
 
@@ -103,6 +103,12 @@ class MyWindow(QMainWindow):
         self.toolbar.addAction(self.setting_action)
         self.toolbar.addAction(self.envelope_action)
 
+        # 쿼리 생성 메뉴 항목 추가
+        query_menu = self.menubar.addMenu("Query")
+        create_query_action = QAction("Create Query", self)
+        query_menu.addAction(create_query_action)
+        create_query_action.triggered.connect(self.create_query_popup)
+
         # Create buttons 
         #btn2 = QPushButton("Button2")
 
@@ -155,7 +161,6 @@ class MyWindow(QMainWindow):
     def dialog_close(self):
         self.dialog.close()
 
-#출처: https://spec.tistory.com/422 [Code Hunter:티스토리]
  
 
     def mousePressEvent(self, e): 
@@ -171,7 +176,71 @@ class MyWindow(QMainWindow):
         # About 버튼 클릭 이벤트
     def About_event(self) :
         QMessageBox.about(self,'About Title','About Message')
-#출처: https://mr-doosun.tistory.com/29 [고졸 입니다만..:티스토리]
+
+    def create_query_popup(self):
+        # Dialog setup
+        self.query_dialog = QDialog(self)
+        self.query_dialog.setWindowTitle("Create Query")
+        layout = QVBoxLayout(self.query_dialog)
+
+        # 쿼리 이름 입력
+        layout.addWidget(QLabel("Name:"))
+        self.query_name_input = QLineEdit()
+        layout.addWidget(self.query_name_input)
+
+        # SQL 쿼리 입력
+        layout.addWidget(QLabel("SQL Query:"))
+        self.query_input = QTextEdit()
+        self.query_input.setFixedHeight(100)  # 적당한 높이 설정
+        layout.addWidget(self.query_input)
+
+        # 매개변수 테이블
+        self.params_table = QTableWidget(0, 3)
+        self.params_table.setHorizontalHeaderLabels(['Name', 'Data Type', 'Value'])
+        layout.addWidget(self.params_table)
+
+        # 매개변수 추가 버튼
+        add_param_btn = QPushButton('Add Parameter')
+        add_param_btn.clicked.connect(self.add_parameter)
+        layout.addWidget(add_param_btn)
+
+        # 저장 버튼
+        save_query_btn = QPushButton('Save Query')
+        save_query_btn.clicked.connect(self.save_query)
+        layout.addWidget(save_query_btn)
+
+        self.query_dialog.setLayout(layout)
+        self.query_dialog.exec_()
+
+    def add_parameter(self):
+        row_count = self.params_table.rowCount()
+        self.params_table.insertRow(row_count)
+        self.params_table.setItem(row_count, 0, QTableWidgetItem(""))  # Name
+        self.params_table.setItem(row_count, 1, QTableWidgetItem(""))  # Data Type
+        self.params_table.setItem(row_count, 2, QTableWidgetItem(""))  # Value
+
+    def save_query_to_db(self):
+        query_text = self.query_input.text()
+        # 쿼리 저장 로직을 여기에 구현
+        # ...
+        print("Query saved:", query_text)
+        self.dialog.accept()
+
+    def save_query(self):
+        query_name = self.query_name_input.text()
+        query_text = self.query_input.toPlainText()
+        parameters = []
+        for row in range(self.params_table.rowCount()):
+            name = self.params_table.item(row, 0).text()
+            data_type = self.params_table.item(row, 1).text()
+            value = self.params_table.item(row, 2).text()
+            parameters.append((name, data_type, value))
+        # 데이터베이스에 쿼리 및 매개변수 저장 로직 구현
+        print("Name:", query_name)
+        print("Query:", query_text)
+        print("Parameters:", parameters)
+        self.query_dialog.accept()
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

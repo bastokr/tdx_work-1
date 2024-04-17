@@ -6,12 +6,15 @@ from PyQt5.QtWidgets import *
 from lib.CRUD import CRUD
 from widget.addColumn import addColumnWidget
 from widget.settingDatabaseWidget import SettingDatabaseWidget
- 
+import requests
+from PyQt5.QtWidgets import QMessageBox
+
 
 class MainList(QWidget):
     def __init__(self):
         super().__init__() 
         self.setupUI()
+        self.parameter_widgets = []  # 매개변수 위젯을 저장하는 리스트
 
     def setupUI(self):
         self.tableWidget = QTableWidget()
@@ -49,11 +52,19 @@ class MainList(QWidget):
         self.btn2.toggle()
         self.btn2.setFixedSize(100, 30)  # Set fixed size for the button
         self.btn2.clicked.connect(self.delete_row)
-      
+
+        self.btn3 = QPushButton('쿼리 생성', self)
+        self.btn3.setCheckable(True)
+        self.btn3.toggle()
+        self.btn3.setFixedSize(100, 30)  # Set fixed size for the button
+        self.btn3.clicked.connect(self.create_query_popup)
+
         self.headerLayer.addWidget(self.label1)
         
         self.headerLayer.addWidget(self.btn1)
         self.headerLayer.addWidget(self.btn2)
+        self.headerLayer.addWidget(self.btn3)
+
         layout.addLayout(self.headerLayer)
         layout.addWidget(self.tableWidget) 
         
@@ -131,8 +142,8 @@ class MainList(QWidget):
     # Dialog 닫기 이벤트
     def dialog_close(self):
         self.dialog.close() 
-        
-    # https://freeprog.tistory.com/333 샘플 소스     
+
+    # https://freeprog.tistory.com/333 샘플 소스
         
     def onCellChanged(self, row, column):
        
@@ -177,19 +188,123 @@ class MainList(QWidget):
             self.tableWidget.removeRow(selected_row)
         else:
             print("No row selected.")
-            
-        
-        #lastState = item;
-        # currentState = item.checkState()
-        # if currentState != lastState:
-        #     if currentState == Qt.CheckState.Checked:
-        #         print("체크됨")
-        #     else:
-        #         print("체크 해제")
-        #     item.setData(0, currentState)
 
-        
-#https://jess913.tistory.com/60        
+    def create_query_popup(self):
+        self.query_dialog = QDialog(self)
+        self.query_dialog.setWindowTitle("Create Query")
+        self.query_dialog.setFixedSize(800, 600)
+        layout = QVBoxLayout()
+
+        layout.addWidget(QLabel("Name:"))
+        self.query_name_input = QLineEdit()
+        layout.addWidget(self.query_name_input)
+
+        # SQL Query Editor
+        layout.addWidget(QLabel("SQL Query:"))
+        self.query_input = QTextEdit()  # 실제 사용 시 향상된 텍스트 에디터로 교체 필요
+        self.query_input.setFixedHeight(200)
+        layout.addWidget(self.query_input)
+
+        # Parameters Section
+        params_container = QWidget()  # 스크롤 영역에 들어갈 컨테이너
+        self.params_layout = QVBoxLayout(params_container)
+        params_header = QHBoxLayout()  # 헤더 레이아웃에 레이블을 추가
+        params_header.addWidget(QLabel("Name"))
+        params_header.addWidget(QLabel("Data Type"))
+        params_header.addWidget(QLabel("Value"))
+        layout.addLayout(params_header)  # 상단에 헤더 레이아웃 추가
+        params_scroll_area = QScrollArea()  # 스크롤 영역 생성
+        params_scroll_area.setWidgetResizable(True)
+        params_scroll_area.setWidget(params_container)
+        layout.addWidget(params_scroll_area)
+
+        # Add Parameter Button
+        button_layout = QHBoxLayout()
+        add_param_btn = QPushButton('Add Parameter')
+        add_param_btn.clicked.connect(self.add_parameter)
+        button_layout.addWidget(add_param_btn)
+        button_layout.addStretch(1)  # 오른쪽 정렬을 위해 스트레치 추가
+        layout.addLayout(button_layout)
+
+        # Save Query Button
+        save_query_btn = QPushButton('Save Query')
+        save_query_btn.clicked.connect(self.save_query)
+        layout.addWidget(save_query_btn)
+
+        self.query_dialog.setLayout(layout)
+        self.query_dialog.exec_()
+
+    def add_parameter(self):
+        param_widget = QWidget()
+        param_layout = QHBoxLayout(param_widget)
+
+        # 이름 입력 필드
+        name_input = QLineEdit()
+
+        # 데이터 타입 선택 드롭다운
+        type_input = QComboBox()
+        # 데이터 타입 옵션 추가
+        data_types = [
+            "smallint", "integer", "bigint", "decimal", "numeric", "real", "double precision", "smallserial",
+            "serial", "bigserial", "char(n)", "varchar(n)", "text", "bytea", "timestamp",
+            "timestamp with time zone", "date", "time", "time with time zone", "interval", "boolean",
+            "enum", "point", "line", "lseg", "box", "path", "polygon", "circle", "cidr", "inet",
+            "macaddr", "macaddr8", "bit(n)", "bit varying(n)", "tsvector", "tsquery", "uuid", "xml",
+            "json", "jsonb", "int4range", "int8range", "numrange", "tsrange", "daterange"
+        ]
+        type_input.addItems(data_types)
+
+        # 값 입력 필드
+        value_input = QLineEdit()
+
+        # 삭제 버튼
+        delete_btn = QPushButton("Delete")
+        delete_btn.clicked.connect(lambda: self.remove_parameter(param_widget))
+
+        param_layout.addWidget(name_input)
+        param_layout.addWidget(type_input)
+        param_layout.addWidget(value_input)
+        param_layout.addWidget(delete_btn)
+
+        self.params_layout.addWidget(param_widget)
+        self.parameter_widgets.append((param_widget, name_input, type_input, value_input))
+
+    def remove_parameter(self, widget):
+        widget.deleteLater()
+        self.parameter_widgets = [pw for pw in self.parameter_widgets if pw[0] != widget]
+
+    def save_query(self):
+        query_name = self.query_name_input.text()
+        query_text = self.query_input.toPlainText()
+        parameters = []
+
+        for _, name_input, type_input, value_input in self.parameter_widgets:
+            name = name_input.text()
+            type_ = type_input.currentText()  # Assuming type_input is a QComboBox
+            value = value_input.text()
+            parameters.append({"parameter": name, "attribute": type_})
+
+        # Prepare the data dictionary to match the expected JSON structure
+        query_data = {
+            "title": query_name,
+            "query": query_text,
+            "parameters": parameters
+        }
+
+        # URL to the API endpoint
+        url = "http://localhost:8081/api/v1/query"
+
+        try:
+            response = requests.post(url, json=query_data)
+            if response.status_code == 201:
+                QMessageBox.information(self, "Success", "Query saved successfully")
+            else:
+                QMessageBox.warning(self, "Error", f"Failed to save query: {response.text}")
+        except requests.exceptions.RequestException as e:
+            QMessageBox.critical(self, "Error", f"An error occurred: {str(e)}")
+
+        self.query_dialog.accept()
+
 class checkboxItem(QTableWidgetItem):
     def __init__(self):
         super().__init__()
