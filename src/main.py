@@ -12,7 +12,7 @@ from PyQt5.QtCore import pyqtSignal, QObject
 from main_view import MainList
 
 from PyQt5.QtWidgets import QDialog
-
+from QueryViewer import QueryViewer
 
 #import qdarkstyle
 
@@ -108,7 +108,7 @@ class MyWindow(QMainWindow):
         create_query_action = QAction("Create Query", self)
         query_menu.addAction(create_query_action)
         create_query_action.triggered.connect(self.create_query_popup)
-
+        self.table_action.triggered.connect(self.dialog_open)
         # Create buttons 
         #btn2 = QPushButton("Button2")
 
@@ -116,7 +116,7 @@ class MyWindow(QMainWindow):
        
         self.lefttree = LeftTree()
         self.main = MainList()
-  
+        self.queryViewer = QueryViewer()
         # Setting up central widget and layout
         central_widget = QWidget()
 
@@ -127,9 +127,8 @@ class MyWindow(QMainWindow):
         self.lefttree.setGeometry(0,0,100,1000)  
          
         splitter.addWidget(self.lefttree)
-        
         splitter.addWidget(self.main)
-       
+        splitter.addWidget(self.queryViewer)
 
 
         self.setCentralWidget(splitter)
