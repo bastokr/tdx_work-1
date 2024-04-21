@@ -11,6 +11,8 @@ from PyQt5.QtCore import pyqtSignal, QObject
 
 from main_view import MainList
 
+from query_view import QueryView  
+
 from PyQt5.QtWidgets import QDialog
 
 
@@ -121,24 +123,40 @@ class MyWindow(QMainWindow):
         central_widget = QWidget()
 
         central_widget.setContentsMargins(0,0,0,0)
-        splitter = QSplitter(Qt.Horizontal)  # Use Qt namespace from QtCore
+        self.splitter = QSplitter(Qt.Horizontal)  # Use Qt namespace from QtCore
         #left_widget = QTextEdit()
         right_widget = QLabel("Layer 2")
         self.lefttree.setGeometry(0,0,100,1000)  
          
-        splitter.addWidget(self.lefttree)
+        self.splitter.addWidget(self.lefttree)
         
-        splitter.addWidget(self.main)
+        self.splitter.addWidget(self.main)
        
 
 
-        self.setCentralWidget(splitter)
+        self.setCentralWidget(self.splitter)
         self.properties_widget = PropertiesWidget()
 
-        splitter.addWidget(self.properties_widget)
+        self.splitter.addWidget(self.properties_widget)
 
         self.lefttree.attributeChange.connect( self.properties_widget.message   )
         self.lefttree.attributeChange.connect(self.main.message)
+        
+        self.lefttree.attributeQuery.connect(self.changeQueryTab)
+
+    
+    def changeQueryTab(self,table_id: object, table_nm: str,z:str):
+        print(table_id)
+        self.queryView = QueryView();
+        #query_widget = self.splitter.widget(1)
+        self.splitter.replaceWidget(1,self.queryView)
+        #old_widget.deleteLater()
+        
+        
+       
+        
+        
+        
      
 
     # 버튼 이벤트 함수

@@ -12,6 +12,8 @@ import lib.Databases as Databases
 class LeftTree(QWidget):
 
     attributeChange = pyqtSignal(int,str,str)
+    attributeQuery = pyqtSignal(int,str,str)
+
 
     def __init__(self):
         super().__init__() 
@@ -24,26 +26,48 @@ class LeftTree(QWidget):
         #Tree 생성
         self.tree = QTreeWidget(self)
         self.tree.resize(500, 1000)        
-        self.tree.setColumnCount(3)
+        self.tree.setColumnCount(4)
         self.tree.setColumnWidth(0,250)
-        self.tree.setHeaderLabels(["구분","속성","id" ])
+        self.tree.setHeaderLabels(["구분","속성","id" ,"구분"])
 
         #Tree에 항목추가 (TreeWidgetItem 추가)
-        itemA = QTreeWidgetItem(self.tree)
-        itemA.setText(0,"테이블")
-        itemA.setText(1,"") 
-        itemA.setText(2,"") 
+        itemTable = QTreeWidgetItem(self.tree)
+        itemTable.setText(0,"테이블")
+        itemTable.setText(1,"") 
+        itemTable.setText(2,"") 
+        itemTable.setText(3,"") 
+        itemTable.setText(4,"") 
+        
+        itemQuery = QTreeWidgetItem(self.tree)
+        itemQuery.setText(0,"쿼리")
+        itemQuery.setText(1,"") 
+        itemQuery.setText(2,"") 
+        itemQuery.setText(3,"") 
+        itemQuery.setText(4,"") 
  
  
            
         db = CRUD() 
         self.result = db.readDB( table="tdx_table", colum="*")
-        i =0
+        
         for data in self.result:
-            ChildA=QTreeWidgetItem(itemA)
+            ChildA=QTreeWidgetItem(itemTable)
+            
             ChildA.setText(0,data[1])
             ChildA.setText(1,data[2]) 
             ChildA.setText(2,str(data[0])) 
+            ChildA.setText(3,"table") 
+        
+        self.result = db.readDB( table="tdx_query", colum="*")
+        
+        for data in self.result:
+            ChildA=QTreeWidgetItem(itemQuery)
+            
+            ChildA.setText(0,data[2])
+            ChildA.setText(1,data[1]) 
+            ChildA.setText(2,str(data[0])) 
+            ChildA.setText(3,"query")
+        
         
         self.tree.itemClicked.connect(self.onItemClicked)
          
@@ -55,9 +79,14 @@ class LeftTree(QWidget):
     def onItemClicked(self, it, col):
         print(it, col, it.text(col))
         print("mousePressEvent left Page")
-        if(it.text(0)!='테이블'):
+        print(it.text(3))
+        if(it.text(3)=='table'):
             self.attributeChange.emit(int(it.text(2)), it.text(0),it.text(1))
+        if(it.text(3)=='query'):
+            self.attributeQuery.emit(int(it.text(2)), it.text(0),it.text(1))
 
+            
+    
 
 
         
