@@ -130,9 +130,9 @@ class MyWindow(QMainWindow):
         right_widget = QLabel("Layer 2")
         self.lefttree.setGeometry(0,0,100,1000)  
          
-        splitter.addWidget(self.lefttree)
-        splitter.addWidget(self.main)
-        splitter.addWidget(self.queryViewer)
+        self.splitter.addWidget(self.lefttree)
+        self.splitter.addWidget(self.main)
+        self.splitter.addWidget(self.queryViewer)
 
 
         self.setCentralWidget(self.splitter)
