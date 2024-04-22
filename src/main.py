@@ -120,7 +120,6 @@ class MyWindow(QMainWindow):
        
         self.lefttree = LeftTree()
         self.main = MainList()
-        self.queryViewer = QueryViewer()
         # Setting up central widget and layout
         central_widget = QWidget()
 
@@ -132,7 +131,6 @@ class MyWindow(QMainWindow):
          
         self.splitter.addWidget(self.lefttree)
         self.splitter.addWidget(self.main)
-        self.splitter.addWidget(self.queryViewer)
 
 
         self.setCentralWidget(self.splitter)
@@ -142,12 +140,26 @@ class MyWindow(QMainWindow):
 
         self.lefttree.attributeChange.connect( self.properties_widget.message   )
         self.lefttree.attributeChange.connect(self.main.message)
-
-
-
-
         self.lefttree.attributeQuery.connect(self.changeQueryTab)
 
+        self.setupUI()
+
+    def setupUI(self):
+        # UI 설정 코드
+        self.lefttree.attributeChange.connect(self.showTableDetails)
+        self.lefttree.attributeQuery.connect(self.showQueryParameters)
+
+    def showTableDetails(self, table_id, table_name, _):
+        if not hasattr(self, 'mainList'):
+            self.mainList = MainList()
+        self.mainList.message(table_id, table_name, _)
+        self.splitter.replaceWidget(1, self.mainList)
+
+    def showQueryDetails(self, query_id, query_name, _):
+        if not hasattr(self, 'queryViewer'):
+            self.queryViewer = QueryViewer()
+        self.queryViewer.showQueryDetails(query_id)
+        self.splitter.replaceWidget(1, self.queryViewer)
 
     def changeQueryTab(self,table_id: object, table_nm: str,z:str):
         print(table_id)
@@ -156,12 +168,14 @@ class MyWindow(QMainWindow):
         self.splitter.replaceWidget(1,self.queryView)
         #old_widget.deleteLater()
 
-
-
-
-
-
-
+    def showQueryParameters(self, query_id, query_name, _):
+        try:
+            if not hasattr(self, 'main'):
+                self.main = MainList()
+            self.main.displayQueryParameters(query_id)
+            self.splitter.replaceWidget(1, self.main)
+        except Exception as e:
+            QMessageBox.critical(self, "오류", f"쿼리 파라미터를 로드하는 중 오류가 발생했습니다: {str(e)}")
 
     # 버튼 이벤트 함수
     def dialog_open(self):
