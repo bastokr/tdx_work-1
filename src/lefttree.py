@@ -70,20 +70,17 @@ class LeftTree(QWidget):
         
         
         self.tree.itemClicked.connect(self.onItemClicked)
-         
-
-     
-        
 
     @QtCore.pyqtSlot(QtWidgets.QTreeWidgetItem, int)
     def onItemClicked(self, it, col):
-        print(it, col, it.text(col))
-        print("mousePressEvent left Page")
-        print(it.text(3))
-        if(it.text(3)=='table'):
-            self.attributeChange.emit(int(it.text(2)), it.text(0),it.text(1))
-        if(it.text(3)=='query'):
-            self.attributeQuery.emit(int(it.text(2)), it.text(0),it.text(1))
+        print("클릭된 아이템:", it, "열:", col, "값:", it.text(col))
+        itemType = it.text(3)  # 'table' 또는 'query' 값을 가집니다.
+        if itemType == 'table':
+            self.attributeChange.emit(int(it.text(2)), it.text(0), it.text(1))
+        elif itemType == 'query':
+            query_id = int(it.text(2))
+            self.attributeQuery.emit(query_id, it.text(0), it.text(1))
+
 
             
     

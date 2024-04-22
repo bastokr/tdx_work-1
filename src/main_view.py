@@ -193,6 +193,20 @@ class MainList(QWidget):
         dialog = QueryCreator(self)
         dialog.show()
 
+    def loadQueryParameters(self, query_id):
+        db = CRUD()
+        result = db.whereDB(table="tdx_query_param", colum="*", where=f"tdx_query_id='{query_id}'")
+        self.tableWidget.setRowCount(len(result))
+        for i, data in enumerate(result):
+            self.tableWidget.setItem(i, 0, QTableWidgetItem(data['parameter']))
+            self.tableWidget.setItem(i, 1, QTableWidgetItem(data['attribute']))
+            self.tableWidget.setItem(i, 2, QTableWidgetItem(""))  # 초기 값은 비워둠
+
+        self.tableWidget.resizeColumnsToContents()
+
+    def displayQueryParameters(self, query_id):
+        self.loadQueryParameters(query_id)
+
 class checkboxItem(QTableWidgetItem):
     def __init__(self):
         super().__init__()
