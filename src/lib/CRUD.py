@@ -1,5 +1,6 @@
 from lib.Databases import Databases
-
+import psycopg2
+import psycopg2.extras  # psycopg2.extras 모듈을 임포트
 class CRUD(Databases):
     def insertDB(self,  table, colum, data):
         sql = "INSERT INTO {} ({}) VALUES %s;".format( table, colum)
@@ -16,15 +17,15 @@ class CRUD(Databases):
             self.db.commit()
         except Exception as e:
             print("Insert DB error:", e)
-        
-    def readDB(self,  table, colum):
-        sql = "SELECT {} FROM  {}".format(colum,   table)
+
+    def readDB(self, table, colum):
         try:
+            sql = f"SELECT {colum} FROM {table}"
             self.cursor.execute(sql)
-            result = self.cursor.fetchall()
-            return result
+            return self.cursor.fetchall()
         except Exception as e:
-            print("Read DB error:", e)  
+            print(f"Read DB error: {e}")
+            raise e
 
     def whereDB(self,  table, colum ,where):
         sql = "SELECT {} FROM  {} WHERE {} ".format(colum,   table , where)
