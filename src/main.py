@@ -5,7 +5,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtWidgets import *
  
-from PropertiesWidget import PropertiesWidget
+from widget.PropertiesWidget import PropertiesWidget
 from lefttree import LeftTree 
 from PyQt5.QtCore import pyqtSignal, QObject
 
@@ -140,7 +140,8 @@ class MyWindow(QMainWindow):
 
         self.lefttree.attributeChange.connect( self.properties_widget.message   )
         self.lefttree.attributeChange.connect(self.main.message)
-        self.lefttree.attributeQuery.connect(self.changeQueryTab)
+        #쿼리 클릭했을 때 탭 변경 
+        #self.lefttree.attributeQuery.connect(self.changeQueryTab)
 
         self.setupUI()
 
@@ -156,8 +157,8 @@ class MyWindow(QMainWindow):
         self.splitter.replaceWidget(1, self.mainList)
 
     def showQueryDetails(self, query_id, query_name, _):
-        if not hasattr(self, 'queryViewer'):
-            self.queryViewer = QueryViewer()
+        #if not hasattr(self, 'queryViewer'):
+        self.queryViewer = QueryView()
         self.queryViewer.showQueryDetails(query_id)
         self.splitter.replaceWidget(1, self.queryViewer)
 
@@ -170,10 +171,12 @@ class MyWindow(QMainWindow):
 
     def showQueryParameters(self, query_id, query_name, _):
         try:
-            if not hasattr(self, 'main'):
-                self.main = MainList()
-            self.main.displayQueryParameters(query_id)
-            self.splitter.replaceWidget(1, self.main)
+            #if not hasattr(self, 'main'):
+            self.queryview = QueryView()
+            self.queryCreator = QueryCreator()
+            #self.queryview.displayQueryParameters(query_id)
+            self.splitter.replaceWidget(1, self.queryview)
+            self.splitter.replaceWidget(2,self.queryCreator)
         except Exception as e:
             QMessageBox.critical(self, "오류", f"쿼리 파라미터를 로드하는 중 오류가 발생했습니다: {str(e)}")
 

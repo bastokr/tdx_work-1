@@ -16,6 +16,11 @@ class QueryView(QWidget):
         self.parameter_widgets = []  # 매개변수 위젯을 저장하는 리스트
 
     def setupUI(self):
+        
+        
+        
+      
+        
         self.tableWidget = QTableWidget()
         #self.tableWidget.setRowCount(0)
         self.tableWidget.setColumnCount(4)
@@ -35,38 +40,60 @@ class QueryView(QWidget):
         #        self.tableWidget.setItem(i, j, QTableWidgetItem(str(i+j)))
 
         layout = QVBoxLayout()
-        self.headerLayer = QHBoxLayout();
         
-        self.label1 = QLabel("퀄리명:")
-        self.textEdit = QLineEdit()
         
-        self.btn1 = QPushButton('&컬럼추가', self)
+        layout.addWidget(QLabel("ID:"))
+        self.query_name_input = QLineEdit()
+        layout.addWidget(self.query_name_input)
+        self.query_exp_input = QLineEdit()
+        layout.addWidget(QLabel("설정:"))
+        layout.addWidget(self.query_exp_input)
+        
+        layout.addWidget(QLabel("SQL Query:"))
+        self.query_input = QTextEdit()
+        self.query_input.setFixedHeight(200)
+        layout.addWidget(self.query_input)
+
+
+        # self.headerLayer = QHBoxLayout();
+        
+        # self.label1 = QLabel("퀄리명:")
+        # self.textEdit = QLineEdit()
+        
+        self.btn1 = QPushButton('&테스트', self)
         self.btn1.setCheckable(True)
         self.btn1.toggle()
         self.btn1.setFixedSize(100, 30)  # Set fixed size for the button
-        self.btn1.clicked.connect(self.dialog_open)
+        self.buttonLayer = QHBoxLayout();
+        self.buttonLayer.addStretch(1)  
+        self.buttonLayer.addWidget(self.btn1)
         
-        self.btn2 = QPushButton('&컬럼삭제', self)
-        self.btn2.setCheckable(True)
-        self.btn2.toggle()
-        self.btn2.setFixedSize(100, 30)  # Set fixed size for the button
-        self.btn2.clicked.connect(self.delete_row)
+        layout.addLayout(self.buttonLayer) 
+         
+        #self.btn1.clicked.connect(self.dialog_open)
+        
+        # self.btn2 = QPushButton('&컬럼삭제', self)
+        # self.btn2.setCheckable(True)
+        # self.btn2.toggle()
+        # self.btn2.setFixedSize(100, 30)  # Set fixed size for the button
+        # self.btn2.clicked.connect(self.delete_row)
 
-        self.btn3 = QPushButton('쿼리 생성', self)
+        self.btn3 = QPushButton('등록', self)
         self.btn3.setCheckable(True)
         self.btn3.toggle()
         self.btn3.setFixedSize(100, 30)  # Set fixed size for the button
         self.btn3.clicked.connect(self.create_query_popup)
+        self.buttonLayer.addWidget(self.btn3)
 
-        self.headerLayer.addWidget(self.label1)
+        # self.headerLayer.addWidget(self.label1)
         
-        self.headerLayer.addWidget(self.btn1)
-        self.headerLayer.addWidget(self.btn2)
-        self.headerLayer.addWidget(self.btn3)
+       # self.headerLayer.addWidget(self.btn1)
+        #self.headerLayer.addWidget(self.btn2)
+        #self.headerLayer.addWidget(self.btn3)
 
-        layout.addLayout(self.headerLayer)
+        #layout.addLayout(self.headerLayer)
         layout.addWidget(self.tableWidget) 
-        
+        layout.addStretch(1) 
         self.setLayout(layout)
 
         self.setWindowTitle('QTableWidget')

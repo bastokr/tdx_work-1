@@ -9,18 +9,18 @@ class QueryCreator(QDialog):
 
     def setup_ui(self):
         self.setWindowTitle("Create Query")
-        self.setFixedSize(800, 600)
+        self.setFixedSize(500, 600)
         layout = QVBoxLayout()
 
-        layout.addWidget(QLabel("Name:"))
-        self.query_name_input = QLineEdit()
-        layout.addWidget(self.query_name_input)
+        #layout.addWidget(QLabel("Name:"))
+        #self.query_name_input = QLineEdit()
+        #layout.addWidget(self.query_name_input)
 
         # SQL Query Editor
-        layout.addWidget(QLabel("SQL Query:"))
-        self.query_input = QTextEdit()
-        self.query_input.setFixedHeight(200)
-        layout.addWidget(self.query_input)
+        #layout.addWidget(QLabel("SQL Query:"))
+        #self.query_input = QTextEdit()
+        #self.query_input.setFixedHeight(200)
+        #layout.addWidget(self.query_input)
 
         # Parameters Section
         params_container = QWidget()
@@ -33,6 +33,7 @@ class QueryCreator(QDialog):
         params_scroll_area = QScrollArea()
         params_scroll_area.setWidgetResizable(True)
         params_scroll_area.setWidget(params_container)
+       
         layout.addWidget(params_scroll_area)
 
         # Add Parameter Button
@@ -46,9 +47,12 @@ class QueryCreator(QDialog):
         # Save Query Button
         save_query_btn = QPushButton('Save Query')
         save_query_btn.clicked.connect(self.save_query)
+        #layout.addStretch(1) 
         layout.addWidget(save_query_btn)
 
         self.setLayout(layout)
+    
+    
 
     def add_parameter(self):
         param_widget = QWidget()
@@ -72,6 +76,9 @@ class QueryCreator(QDialog):
         param_layout.addWidget(value_input)
         param_layout.addWidget(delete_btn)
         self.params_layout.addWidget(param_widget)
+        self.params_layout.insertWidget(self.params_layout.count()-2,param_widget)
+        if(self.params_layout.count()==1):
+            self.params_layout.addStretch(1) 
         self.parameter_widgets.append((param_widget, name_input, type_input, value_input))
 
     def remove_parameter(self, widget):
