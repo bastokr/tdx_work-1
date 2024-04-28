@@ -5,6 +5,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtWidgets import *
  
+from dio.query import Query
 from widget.PropertiesWidget import PropertiesWidget
 from lefttree import LeftTree 
 from PyQt5.QtCore import pyqtSignal, QObject
@@ -169,7 +170,7 @@ class MyWindow(QMainWindow):
         self.splitter.replaceWidget(1,self.queryView)
         #old_widget.deleteLater()
 
-    def showQueryParameters(self, query_id, query_name, _):
+    def showQueryParameters(self, query:Query):
         try:
             #if not hasattr(self, 'main'):
             self.queryview = QueryView()
@@ -177,6 +178,8 @@ class MyWindow(QMainWindow):
             #self.queryview.displayQueryParameters(query_id)
             self.splitter.replaceWidget(1, self.queryview)
             self.splitter.replaceWidget(2,self.queryCreator)
+            self.queryview.message(query);
+            
         except Exception as e:
             QMessageBox.critical(self, "오류", f"쿼리 파라미터를 로드하는 중 오류가 발생했습니다: {str(e)}")
 

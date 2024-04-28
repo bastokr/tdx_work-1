@@ -6,13 +6,14 @@ from PyQt5.QtCore import pyqtSignal
 
 import psycopg2
 
+from dio.query import Query
 from lib.CRUD import CRUD
 import lib.Databases as Databases
 
 class LeftTree(QWidget):
 
     attributeChange = pyqtSignal(int,str,str)
-    attributeQuery = pyqtSignal(int,str,str)
+    attributeQuery = pyqtSignal(Query)
 
 
     def __init__(self):
@@ -79,7 +80,9 @@ class LeftTree(QWidget):
             self.attributeChange.emit(int(it.text(2)), it.text(0), it.text(1))
         elif itemType == 'query':
             query_id = int(it.text(2))
-            self.attributeQuery.emit(query_id, it.text(0), it.text(1))
+            query =  Query(id=it.text(2),http_request=it.text(1),odata_query_name=it.text(0),query=it.text(3),title=it.text(4)) 
+            
+            self.attributeQuery.emit(query)
 
 
             

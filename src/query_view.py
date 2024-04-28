@@ -8,6 +8,7 @@ from widget.addColumn import addColumnWidget
 from widget.settingDatabaseWidget import SettingDatabaseWidget
 import requests
 from PyQt5.QtWidgets import QMessageBox  
+from dio.query import Query
  
 class QueryView(QWidget):
     def __init__(self):
@@ -43,10 +44,10 @@ class QueryView(QWidget):
         
         
         layout.addWidget(QLabel("ID:"))
-        self.query_name_input = QLineEdit()
-        layout.addWidget(self.query_name_input)
+        self.query_id_input = QLineEdit()
+        layout.addWidget(self.query_id_input)
         self.query_exp_input = QLineEdit()
-        layout.addWidget(QLabel("설정:"))
+        layout.addWidget(QLabel("설명:"))
         layout.addWidget(self.query_exp_input)
         
         layout.addWidget(QLabel("SQL Query:"))
@@ -98,12 +99,21 @@ class QueryView(QWidget):
 
         self.setWindowTitle('QTableWidget')
     
-    def message(self,table_id: object, table_nm: str,z:str):
-        print(table_id)    
-        print(table_nm)  
-        self.label1.setText('테이블:'+table_nm)
-        print(z) 
+    def message(self,query:Query):
+        print(query.id)    
+        #print(table_nm)  
+        #self.label1.setText('테이블:'+table_nm)
+        #print(z) 
         #self.gridinit(table_id, table_nm)
+        db = CRUD()
+        self.result = db.whereDB( table="tdx_query", colum="*" , where ="id='"+str(query.id)+"'")
+        data = self.result[0]
+        self.query_id_input.setText(str(data[2]))
+        self.query_exp_input.setText(data[4])
+        self.query_input.setText(data[3])
+        
+        
+
      
  
     def gridinit(self,table_id:object,table_nm:object):
