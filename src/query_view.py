@@ -24,13 +24,13 @@ class QueryView(QWidget):
         
         self.tableWidget = QTableWidget()
         #self.tableWidget.setRowCount(0)
-        self.tableWidget.setColumnCount(4)
+        self.tableWidget.setColumnCount(5)
 
         self.tableWidget.setEditTriggers(QAbstractItemView.NoEditTriggers)
         # self.tableWidget.setEditTriggers(QAbstractItemView.DoubleClicked)
         # self.tableWidget.setEditTriggers(QAbstractItemView.AllEditTriggers)
         
-        self.tableWidget.setHorizontalHeaderLabels(["선택","id", "쿼리id","컬럼명","타입"])  
+        self.tableWidget.setHorizontalHeaderLabels(["선택","id", "쿼리id","컬럼명","쿼리id"])  
         #self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.tableWidget.horizontalHeader().resizeSection(0,50)
         
@@ -111,16 +111,16 @@ class QueryView(QWidget):
         self.query_id_input.setText(str(data[2]))
         self.query_exp_input.setText(data[4])
         self.query_input.setText(data[3])
+        self.gridinit(query.id)
         
         
 
      
  
-    def gridinit(self,table_id:object,table_nm:object):
+    def gridinit(self,id:object):
         db = CRUD() 
-        self.table_id = table_id;
-        self.table_nm = table_nm;
-        self.result = db.whereDB( table="tdx_column", colum="*" , where ="table_id='"+str(table_id)+"'")
+        self.id = id; 
+        self.result = db.whereDB( table="tdx_query_param", colum="*" , where ="tdx_query_id='"+str(id)+"'")
         i =0
         #result.count
         self.tableWidget.setRowCount(len(self.result))

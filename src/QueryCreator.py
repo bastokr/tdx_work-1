@@ -43,6 +43,8 @@ class QueryCreator(QDialog):
         button_layout.addWidget(add_param_btn)
         button_layout.addStretch(1)
         layout.addLayout(button_layout)
+        
+ 
 
         # Save Query Button
         save_query_btn = QPushButton('Save Query')
@@ -56,6 +58,8 @@ class QueryCreator(QDialog):
 
     def add_parameter(self):
         param_widget = QWidget()
+        param_widget.setStyleSheet("color: white; padding: 4px 4px 4px 4px; border: none; border-radius: 1px;")  # Remove border
+        
         param_layout = QHBoxLayout(param_widget)
         name_input = QLineEdit()
         type_input = QComboBox()
@@ -70,16 +74,20 @@ class QueryCreator(QDialog):
         type_input.addItems(data_types)
         value_input = QLineEdit()
         delete_btn = QPushButton("Delete")
+        delete_btn.setStyleSheet("background-color: #4CAF50; color: white; padding: 5px 5px; border: none; border-radius: 2px;")
+    
         delete_btn.clicked.connect(lambda: self.remove_parameter(param_widget))
         param_layout.addWidget(name_input)
         param_layout.addWidget(type_input)
         param_layout.addWidget(value_input)
         param_layout.addWidget(delete_btn)
+        
         self.params_layout.addWidget(param_widget)
         self.params_layout.insertWidget(self.params_layout.count()-2,param_widget)
         if(self.params_layout.count()==1):
             self.params_layout.addStretch(1) 
         self.parameter_widgets.append((param_widget, name_input, type_input, value_input))
+        
 
     def remove_parameter(self, widget):
         widget.deleteLater()
