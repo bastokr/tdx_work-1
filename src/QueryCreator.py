@@ -1,6 +1,8 @@
 from PyQt5.QtWidgets import QApplication, QDialog, QVBoxLayout, QLabel, QLineEdit, QTextEdit, QWidget, QPushButton, QHBoxLayout, QScrollArea, QMessageBox, QComboBox
 import requests
 
+from lib.CRUD import CRUD
+
 class QueryCreator(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -39,10 +41,12 @@ class QueryCreator(QDialog):
         # Add Parameter Button
         button_layout = QHBoxLayout()
         add_param_btn = QPushButton('Add Parameter')
-        add_param_btn.clicked.connect(self.add_parameter)
+        add_param_btn.clicked.connect(lambda: self.add_parameter("", ""))
         button_layout.addWidget(add_param_btn)
         button_layout.addStretch(1)
         layout.addLayout(button_layout)
+         
+        
         
  
 
@@ -54,12 +58,22 @@ class QueryCreator(QDialog):
 
         self.setLayout(layout)
     
-    
+    def default_param(self,id):
+        db = CRUD() 
+        self.id = id; 
+        self.result = db.whereDB( table="tdx_query_param", colum="*" , where ="tdx_query_id='"+str(id)+"'")
+        i =0
+        #result.count
+           
+        for i, data in enumerate(self.result):
+            self.add_parameter(data[2], data[1])
 
-    def add_parameter(self):
+                 
+
+    def add_parameter(self,colname,datatype):
         param_widget = QWidget()
         param_widget.setStyleSheet("color: white; padding: 4px 4px 4px 4px; border: none; border-radius: 1px;")  # Remove border
-        
+         
         param_layout = QHBoxLayout(param_widget)
         name_input = QLineEdit()
         type_input = QComboBox()
@@ -81,6 +95,9 @@ class QueryCreator(QDialog):
         param_layout.addWidget(type_input)
         param_layout.addWidget(value_input)
         param_layout.addWidget(delete_btn)
+        
+        name_input.setText(colname)
+        type_input.setCurrentText(datatype)
         
         self.params_layout.addWidget(param_widget)
         self.params_layout.insertWidget(self.params_layout.count()-2,param_widget)

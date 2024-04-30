@@ -178,7 +178,8 @@ class MyWindow(QMainWindow):
             #self.queryview.displayQueryParameters(query_id)
             self.splitter.replaceWidget(1, self.queryview)
             self.splitter.replaceWidget(2,self.queryCreator)
-            self.queryview.message(query);
+            self.queryview.message(query)
+            self.queryCreator.default_param(query.id)
             
         except Exception as e:
             QMessageBox.critical(self, "오류", f"쿼리 파라미터를 로드하는 중 오류가 발생했습니다: {str(e)}")
