@@ -6,6 +6,8 @@ from PyQt5.QtWidgets import QWidget
 from PyQt5.QtWidgets import *
  
 from dio.query import Query
+from sapui5.sapui5_lefttree import Sapui5LeftTree
+from sapui5.sapui5_main_view import Sapui5MainList
 from widget.PropertiesWidget import PropertiesWidget
 from lefttree import LeftTree 
 from PyQt5.QtCore import pyqtSignal, QObject
@@ -36,6 +38,8 @@ class MyWindow(QMainWindow):
 
         # file menu action
         self.new_action = QAction("New")
+        
+        self.new_action.triggered.connect(self.showSapui5Viewer)
         self.quit_action = QAction("Quit")
         self.table_action = QAction("Table")
         self.quit_action.triggered.connect(self.close)
@@ -140,15 +144,14 @@ class MyWindow(QMainWindow):
         self.splitter.addWidget(self.properties_widget)
 
         self.lefttree.attributeChange.connect( self.properties_widget.message   )
-        self.lefttree.attributeChange.connect(self.main.message)
-        #쿼리 클릭했을 때 탭 변경 
-        #self.lefttree.attributeQuery.connect(self.changeQueryTab)
+        self.lefttree.attributeChange.connect(self.main.message)  
 
         self.setupUI()
 
     def setupUI(self):
         # UI 설정 코드
         self.lefttree.attributeChange.connect(self.showTableDetails)
+        # 퀴리 글릭시
         self.lefttree.attributeQuery.connect(self.showQueryParameters)
 
     def showTableDetails(self, table_id, table_name, _):
@@ -162,13 +165,7 @@ class MyWindow(QMainWindow):
         self.queryViewer = QueryView()
         self.queryViewer.showQueryDetails(query_id)
         self.splitter.replaceWidget(1, self.queryViewer)
-
-    def changeQueryTab(self,table_id: object, table_nm: str,z:str):
-        print(table_id)
-        self.queryView = QueryView();
-        #query_widget = self.splitter.widget(1)
-        self.splitter.replaceWidget(1,self.queryView)
-        #old_widget.deleteLater()
+ 
 
     def showQueryParameters(self, query:Query):
         try:
@@ -183,6 +180,18 @@ class MyWindow(QMainWindow):
             
         except Exception as e:
             QMessageBox.critical(self, "오류", f"쿼리 파라미터를 로드하는 중 오류가 발생했습니다: {str(e)}")
+
+    def showSapui5Viewer(self):
+        try:
+            self.sapui5leftTabView = Sapui5LeftTree()
+            self.sapui5MainView = Sapui5MainList()
+            self.splitter.replaceWidget(0,self.sapui5leftTabView)
+            self.splitter.replaceWidget(1,self.sapui5MainView)
+            self.sapui5leftTabView.default_param(query.id)
+        except Exception as e:
+            QMessageBox.critical(self, "오류", f"쿼리 파라미터를 로드하는 중 오류가 발생했습니다: {str(e)}")
+            
+
 
     # 버튼 이벤트 함수
     def dialog_open(self):
@@ -225,6 +234,9 @@ class MyWindow(QMainWindow):
         dialog = QueryCreator(self)
         dialog.show()
 
+class MyApp(QApplication):
+    def applicationSupportsSecureRestorableState(self):
+        return True
 
 
 if __name__ == "__main__":
