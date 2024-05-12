@@ -22,6 +22,10 @@
 					</m:OverflowToolbar>
 				</extension>
 				<columns>
+					[columnData]
+				<!--
+
+				 
 					<Column width="11rem">
 						<m:Label text="Product Name" />
 						<template>
@@ -133,6 +137,7 @@
 							}"/>
 						</template>
 					</Column>
+					-->
 				</columns>
 			</Table>
 		</m:content>

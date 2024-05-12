@@ -45,9 +45,9 @@ class CodeWindow(QMainWindow):
 
         
         with open(current_directory+"/"+file_path,'r') as file:
-            file_content = file.read() 
+            self.file_content = file.read() 
 
-        self.code_editor.setText(file_content)
+        self.code_editor.setText(self.file_content)
         
  
         self.layout.addWidget(self.code_editor)
@@ -61,18 +61,34 @@ class CodeWindow(QMainWindow):
         
         db = CRUD() 
         self.id = id; 
-        self.result = db.whereDB( table="tdx_query_param", colum="*" , where ="tdx_query_id='"+str(id)+"'")
+        self.result = db.whereDB( table="tdx_query_param", colum="*" , where ="tdx_query_id='"+id+"'")
         i =0
       #result.count
         
         for i, data in enumerate(self.result):
-            self.add_parameter(data[2], data[1])
+            print(data[2])
+            #self.add_parameter(data[2], data[1])
+            
+            colm = '''<Column width="11rem">
+						<m:Label text="Product Name" />
+						<template>
+							<m:Text text="{ }" wrapping="false" />
+						</template>
+                    </Column>''' 
+                    
+            self.file_content = self.file_content.replace("[columnData]", colm)
+            self.code_editor.setText(self.file_content)
+
+
+                
+
     
         
          
 
     def execute_code(self):
         code = self.code_editor.toPlainText()
+        
         try:
             exec(code)
         except Exception as e:

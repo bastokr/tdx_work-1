@@ -43,7 +43,5 @@ class Sapui5MainList(QWidget):
         self.result = db.whereDB( table="tdx_query_param", colum="*" , where ="tdx_query_id='"+str(id)+"'")
         i =0
         #result.count
-           
-        for i, data in enumerate(self.result):
-            self.add_parameter(data[2], data[1])
+            
         
