@@ -11,7 +11,7 @@ import xml.dom.minidom
 from lib.crud import Crud
 
 
-class CodeWindow(QMainWindow):
+class GridWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
@@ -62,6 +62,7 @@ class CodeWindow(QMainWindow):
         db = Crud()
         self.id = id; 
         self.result , colnames = db.whereDB( table="tdx_query_param", colum="*" , where ="tdx_query_id='"+id+"'",return_column_names=True)
+        
         i =0
       #result.count
         

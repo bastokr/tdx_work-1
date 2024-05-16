@@ -19,21 +19,32 @@ class Crud(Databases):
         except Exception as e:
             print("Insert DB error:", e)
 
-    def readDB(self, table, colum):
+    def readDB(self, table, colum,return_column_names=False):
+        
+        sql = f"SELECT {colum} FROM {table}"
+        
         try:
-            sql = f"SELECT {colum} FROM {table}"
             self.cursor.execute(sql)
-            return self.cursor.fetchall()
+            result = self.cursor.fetchall()
+            if return_column_names:
+                colnames = [desc[0] for desc in self.cursor.description]
+                return result , colnames
+            else:
+                return result
         except Exception as e:
             print(f"Read DB error: {e}")
             raise e
 
-    def whereDB(self, table, colum, where):
-        sql = "SELECT {} FROM  {} WHERE {}".format(colum, table, where)
+    def whereDB(self, table, column, where, return_column_names=False):
+        sql = "SELECT {} FROM {} WHERE {}".format(column, table, where)
         try:
             self.cursor.execute(sql)
             result = self.cursor.fetchall()
-            return result
+            if return_column_names:
+                colnames = [desc[0] for desc in self.cursor.description]
+                return result , colnames
+            else:
+                return result
         except Exception as e:
             print("Read DB error:", e)
 
