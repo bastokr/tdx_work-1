@@ -88,7 +88,7 @@ class AddColumnWidget(QDialog):
 
         db = Crud()
         db.insertDBSeq( table="tdx_column", 
-                        colum="table_id,name,type",seq=seq_next, data=(table_id,column_nm , column_type))
+                        column="table_id,name,type",seq=seq_next, data=(table_id,column_nm , column_type))
         
         self.close_dialog()
         

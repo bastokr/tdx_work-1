@@ -61,7 +61,7 @@ class GridWindow(QMainWindow):
         
         db = Crud()
         self.id = id; 
-        self.result , colnames = db.whereDB( table="tdx_query_param", colum="*" , where ="tdx_query_id='"+id+"'",return_column_names=True)
+        self.result , colnames = db.whereDB( table="tdx_query_param", column="*" , where ="tdx_query_id='"+id+"'",return_column_names=True)
         
         i =0
       #result.count

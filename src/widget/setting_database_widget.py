@@ -81,7 +81,7 @@ class SettingDatabaseWidget(QDialog):
 
         db = Crud()
         db.insertDB( table="tdx_table", 
-                    colum="id, name, description",data=(table_id, table_name, description))
+                    column="id, name, description",data=(table_id, table_name, description))
     
 
 if __name__ == "__main__":

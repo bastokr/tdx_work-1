@@ -61,7 +61,7 @@ class QueryCreator(QDialog):
     def default_param(self,id):
         db = Crud()
         self.id = id; 
-        self.result = db.whereDB( table="tdx_query_param", colum="*" , where ="tdx_query_id='"+str(id)+"'")
+        self.result = db.whereDB( table="tdx_query_param", column="*" , where ="tdx_query_id='"+str(id)+"'")
         i =0
         #result.count
            

@@ -57,7 +57,7 @@ class QueryView(QWidget):
 
     def message(self, query: Query):
         db = Crud()
-        self.result = db.whereDB(table="tdx_query", colum="*", where="id='" + str(query.id) + "'")
+        self.result = db.whereDB(table="tdx_query", column="*", where="id='" + str(query.id) + "'")
         data = self.result[0]
         self.query_id_input.setText(str(query.id))  # 쿼리 ID 값을 정확하게 설정
         self.query_exp_input.setText(data[4])
@@ -67,7 +67,7 @@ class QueryView(QWidget):
     def gridinit(self, id: object):
         db = Crud()
         self.id = id
-        self.result = db.whereDB(table="tdx_query_param", colum="*", where="tdx_query_id='" + str(id) + "'")
+        self.result = db.whereDB(table="tdx_query_param", column="*", where="tdx_query_id='" + str(id) + "'")
         i = 0
         self.tableWidget.setRowCount(len(self.result))
 
@@ -106,7 +106,7 @@ class QueryView(QWidget):
 
         # 파라미터 가져오기
         params = {}
-        query_params = db.whereDB(table="tdx_query_param", colum="*", where=f"tdx_query_id={query_id}")
+        query_params = db.whereDB(table="tdx_query_param", column="*", where=f"tdx_query_id={query_id}")
         for param in query_params:
             param_name = param['parameter']
             param_value = param['value']

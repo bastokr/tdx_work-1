@@ -84,7 +84,7 @@ class MainList(QWidget):
         db = Crud()
         self.table_id = table_id;
         self.table_nm = table_nm;
-        self.result = db.whereDB( table="tdx_column", colum="*" , where ="table_id='"+str(table_id)+"'")
+        self.result = db.whereDB( table="tdx_column", column="*" , where ="table_id='"+str(table_id)+"'")
         i =0
         #result.count
         self.tableWidget.setRowCount(len(self.result))
@@ -195,7 +195,7 @@ class MainList(QWidget):
 
     def loadQueryParameters(self, query_id):
         db = Crud()
-        result = db.whereDB(table="tdx_query_param", colum="*", where=f"tdx_query_id='{query_id}'")
+        result = db.whereDB(table="tdx_query_param", column="*", where=f"tdx_query_id='{query_id}'")
         self.tableWidget.setRowCount(len(result))
         for i, data in enumerate(result):
             self.tableWidget.setItem(i, 0, QTableWidgetItem(data['parameter']))

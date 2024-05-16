@@ -44,7 +44,7 @@ class Sapui5MainList(QWidget):
 
         db = Crud()
         self.id = id
-        self.result = db.whereDB(table="tdx_query_param", colum="*", where=f"tdx_query_id='{str(id)}'")
+        self.result = db.whereDB(table="tdx_query_param", column="*", where=f"tdx_query_id='{str(id)}'")
         i = 0
         # result.count
 

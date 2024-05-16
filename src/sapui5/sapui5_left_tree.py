@@ -49,7 +49,7 @@ class Sapui5LeftTree(QWidget):
  
            
         db = Crud()
-        self.result = db.readDB( table="tdx_table", colum="*")
+        self.result = db.readDB( table="tdx_table", column="*")
         
         for data in self.result:
             ChildA=QTreeWidgetItem(itemTable)
@@ -59,7 +59,7 @@ class Sapui5LeftTree(QWidget):
             ChildA.setText(2,str(data[0])) 
             ChildA.setText(3,"table") 
         
-        self.result = db.readDB( table="tdx_query", colum="*")
+        self.result = db.readDB( table="tdx_query", column="*")
         
         for data in self.result:
             ChildA=QTreeWidgetItem(itemQuery)

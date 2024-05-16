@@ -3,25 +3,25 @@ import psycopg2
 import psycopg2.extras  # psycopg2.extras 모듈을 임포트
 
 class Crud(Databases):
-    def insertDB(self, table, colum, data):
-        sql = "INSERT INTO {} ({}) VALUES %s;".format(table, colum)
+    def insertDB(self, table, column, data):
+        sql = "INSERT INTO {} ({}) VALUES %s;".format(table, column)
         try:
             self.cursor.execute(sql, (data,))
             self.db.commit()
         except Exception as e:
             print("Insert DB error:", e)
 
-    def insertDBSeq(self, table, colum, data, seq):
-        sql = "INSERT INTO {} ({}) VALUES %s;".format(table, colum)
+    def insertDBSeq(self, table, column, data, seq):
+        sql = "INSERT INTO {} ({}) VALUES %s;".format(table, column)
         try:
             self.cursor.execute(sql, (data,))
             self.db.commit()
         except Exception as e:
             print("Insert DB error:", e)
 
-    def readDB(self, table, colum,return_column_names=False):
+    def readDB(self, table, column,return_column_names=False):
         
-        sql = f"SELECT {colum} FROM {table}"
+        sql = f"SELECT {column} FROM {table}"
         
         try:
             self.cursor.execute(sql)
@@ -37,7 +37,7 @@ class Crud(Databases):
 
     def whereDB(self, table, column, where, return_column_names=False):
         sql = "SELECT {} FROM {} WHERE {}".format(column, table, where)
-        try:
+        try: 
             self.cursor.execute(sql)
             result = self.cursor.fetchall()
             if return_column_names:
@@ -48,14 +48,14 @@ class Crud(Databases):
         except Exception as e:
             print("Read DB error:", e)
 
-    def updateDB(self, schema, table, colum, value, condition):
-        sql = "UPDATE {}.{} SET {}=%s WHERE {}=%s".format(schema, table, colum, colum)
+    def updateDB(self, schema, table, column, value, condition):
+        sql = "UPDATE {}.{} SET {}=%s WHERE {}=%s".format(schema, table, column, column)
         try:
             self.cursor.execute(sql, (value, condition))
             self.db.commit()
         except Exception as e:
             print("Update DB error:", e)
-
+    
     def deleteDB(self, table, condition):
         sql = "DELETE FROM {} WHERE {};".format(table, condition)
         try:
@@ -90,5 +90,5 @@ class Crud(Databases):
 
 if __name__ == "__main__":
     db = Crud()
-    print(db.readDB(table='public.my_table', colum='*'))
-    db.updateDB(schema='public', table='my_table', colum='name', value='new_value', condition="id = 1")
+    print(db.readDB(table='public.my_table', column='*'))
+    db.updateDB(schema='public', table='my_table', column='name', value='new_value', condition="id = 1")
