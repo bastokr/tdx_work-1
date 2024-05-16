@@ -217,9 +217,13 @@ class MainWindow(QMainWindow):
 
     def save_db_settings(self, settings):
         self.db_settings = settings
+        print("self.db_settings:", self.db_settings)  # 딕셔너리 출력
         self.db.set_settings(settings)  # 데이터베이스 연결 설정
         QMessageBox.information(self, "Settings Saved", "Database settings saved successfully.")
+        self.lefttree.db.set_settings(settings)  # LeftTree에 데이터베이스 설정 전달
         self.lefttree.refresh_data()  # 데이터베이스 설정 후 데이터를 갱신
+
+
 class MyApp(QApplication):
     def applicationSupportsSecureRestorableState(self):
         return True

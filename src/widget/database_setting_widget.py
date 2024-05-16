@@ -3,13 +3,12 @@
 import sys
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QLabel, QLineEdit, QPushButton, QHBoxLayout, QMessageBox
 from PyQt5.QtCore import pyqtSignal
-
+from lib.crud import Crud
 class DatabaseSettingWidget(QDialog):
-    closeDialog = pyqtSignal(dict) # type: ignore
+    closeDialog = pyqtSignal(dict)  # type: ignore
 
-    def __init__(self):
-        super().__init__()
-
+    def __init__(self, parent=None):
+        super().__init__(parent)
         self.setupUI()
 
     def setupUI(self):
@@ -69,6 +68,12 @@ class DatabaseSettingWidget(QDialog):
             "port": self.port_input.text(),
         }
 
-        # Emit signal with settings
-        self.closeDialog.emit(settings)
-        self.close()
+        # 데이터베이스 연결 테스트
+        db = Crud()
+        if db.test_connection(settings):
+            # 연결 성공
+            self.closeDialog.emit(settings)
+            self.close()
+        else:
+            # 연결 실패
+            QMessageBox.critical(self, "Connection Failed", "Failed to connect to the database with the provided settings.")
