@@ -8,7 +8,7 @@ from widget.addColumn import addColumnWidget
 from widget.settingDatabaseWidget import SettingDatabaseWidget
 import requests
 from PyQt5.QtWidgets import QMessageBox
-from QueryCreator import QueryCreator
+from query_creator import QueryCreator
 
 class MainList(QWidget):
     def __init__(self):

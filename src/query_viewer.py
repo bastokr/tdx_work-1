@@ -1,7 +1,7 @@
 import sys
 import requests
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QListWidget, QListWidgetItem, QMessageBox, QDialog
-from QueryCreator import QueryCreator
+from query_creator import QueryCreator
 from PyQt5.QtCore import Qt
 
 class QueryViewer(QWidget):

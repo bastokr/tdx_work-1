@@ -9,23 +9,23 @@ from dio.query import Query
 from sapui5.sapui5_lefttree import Sapui5LeftTree
 from sapui5.sapui5_main_view import Sapui5MainList
 from widget.PropertiesWidget import PropertiesWidget
-from lefttree import LeftTree 
+from left_tree import LeftTree
 from PyQt5.QtCore import pyqtSignal, QObject
 
-from main_view import MainList
+from main_list import MainList
 
 from query_view import QueryView
 
 from PyQt5.QtWidgets import QDialog
-from QueryViewer import QueryViewer
+from query_viewer import QueryViewer
 
 #import qdarkstyle
 
 from widget.settingDatabaseWidget import SettingDatabaseWidget
-from QueryCreator import QueryCreator
+from query_creator import QueryCreator
  
 
-class MyWindow(QMainWindow):
+class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("TDX platform v0.1")
@@ -261,6 +261,6 @@ if __name__ == "__main__":
     app.setPalette(palette)
     #app.setStyleSheet(qdarkstyle.load_stylesheet(qt_api='pyqt5'))
 
-    window = MyWindow()
+    window = MainWindow()
     window.show()
     sys.exit(app.exec_())
