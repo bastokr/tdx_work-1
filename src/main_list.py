@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import *
 
 from lib.crud import Crud
 from widget.add_column_widget import AddColumnWidget
-from widget.setting_database_widget import SettingDatabaseWidget
+from widget.make_dynamic_table_widget import MakeDynamicTableWidget
 import requests
 from PyQt5.QtWidgets import QMessageBox
 from query_creator import QueryCreator

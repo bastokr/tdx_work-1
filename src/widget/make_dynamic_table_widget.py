@@ -8,7 +8,7 @@ from PyQt5.QtCore import pyqtSignal, QObject
 from lib.crud import Crud
 import lib.databases as Databases
 
-class SettingDatabaseWidget(QDialog):
+class MakeDynamicTableWidget(QDialog):
     closeDialog = pyqtSignal() # type: ignore
 
     def __init__(self):
@@ -86,7 +86,7 @@ class SettingDatabaseWidget(QDialog):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    window = SettingDatabaseWidget()
+    window = MakeDynamicTableWidget()
     window.setWindowTitle("Setting Database Widget")
     window.setGeometry(100, 100, 400, 300)
     window.show()
