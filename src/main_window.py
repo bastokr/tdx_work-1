@@ -8,7 +8,7 @@ from PyQt5.QtWidgets import *
 from dio.query import Query
 from sapui5.sapui5_left_tree import Sapui5LeftTree
 from sapui5.sapui5_main_list import Sapui5MainList
-from widget.PropertiesWidget import PropertiesWidget
+from widget.properties_widget import PropertiesWidget
 from left_tree import LeftTree
 from PyQt5.QtCore import pyqtSignal, QObject
 
@@ -21,7 +21,7 @@ from query_viewer import QueryViewer
 
 #import qdarkstyle
 
-from widget.settingDatabaseWidget import SettingDatabaseWidget
+from widget.setting_database_widget import SettingDatabaseWidget
 from query_creator import QueryCreator
  
 

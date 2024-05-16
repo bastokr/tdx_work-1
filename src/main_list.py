@@ -4,8 +4,8 @@ from PyQt5.QtWidgets import QWidget
 from PyQt5.QtWidgets import *
 
 from lib.crud import Crud
-from widget.addColumn import addColumnWidget
-from widget.settingDatabaseWidget import SettingDatabaseWidget
+from widget.add_column_widget import AddColumnWidget
+from widget.setting_database_widget import SettingDatabaseWidget
 import requests
 from PyQt5.QtWidgets import QMessageBox
 from query_creator import QueryCreator
@@ -126,7 +126,7 @@ class MainList(QWidget):
         layout = QHBoxLayout(self.dialog ) 
         
         preview = QLabel('', self.dialog )
-        addColumn = addColumnWidget(self.table_id,self.table_nm)
+        addColumn = AddColumnWidget(self.table_id, self.table_nm)
         layout.addWidget(addColumn) 
         self.dialog.setWindowModality(Qt.ApplicationModal)
         self.dialog.resize(800, 500)

@@ -8,7 +8,7 @@ from PyQt5.QtCore import pyqtSignal, QObject
 from lib.crud import Crud
 import lib.databases as Databases
 
-class addColumnWidget(QDialog):
+class AddColumnWidget(QDialog):
     closeDialog = pyqtSignal() # type: ignore
 
     def __init__(self,table_id,table_nm):
