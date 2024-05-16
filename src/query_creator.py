@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QApplication, QDialog, QVBoxLayout, QLabel, QLineEdit, QTextEdit, QWidget, QPushButton, QHBoxLayout, QScrollArea, QMessageBox, QComboBox
 import requests
 
-from lib.CRUD import CRUD
+from lib.crud import Crud
 
 class QueryCreator(QDialog):
     def __init__(self, parent=None):
@@ -59,7 +59,7 @@ class QueryCreator(QDialog):
         self.setLayout(layout)
     
     def default_param(self,id):
-        db = CRUD() 
+        db = Crud()
         self.id = id; 
         self.result = db.whereDB( table="tdx_query_param", colum="*" , where ="tdx_query_id='"+str(id)+"'")
         i =0

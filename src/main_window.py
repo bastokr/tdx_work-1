@@ -6,8 +6,8 @@ from PyQt5.QtWidgets import QWidget
 from PyQt5.QtWidgets import *
  
 from dio.query import Query
-from sapui5.sapui5_lefttree import Sapui5LeftTree
-from sapui5.sapui5_main_view import Sapui5MainList
+from sapui5.sapui5_left_tree import Sapui5LeftTree
+from sapui5.sapui5_main_list import Sapui5MainList
 from widget.PropertiesWidget import PropertiesWidget
 from left_tree import LeftTree
 from PyQt5.QtCore import pyqtSignal, QObject

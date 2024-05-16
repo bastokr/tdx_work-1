@@ -3,7 +3,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtWidgets import *
 
-from lib.CRUD import CRUD
+from lib.crud import Crud
 from widget.addColumn import addColumnWidget
 from widget.settingDatabaseWidget import SettingDatabaseWidget
 import requests
@@ -81,7 +81,7 @@ class MainList(QWidget):
      
  
     def gridinit(self,table_id:object,table_nm:object):
-        db = CRUD() 
+        db = Crud()
         self.table_id = table_id;
         self.table_nm = table_nm;
         self.result = db.whereDB( table="tdx_column", colum="*" , where ="table_id='"+str(table_id)+"'")
@@ -194,7 +194,7 @@ class MainList(QWidget):
         dialog.show()
 
     def loadQueryParameters(self, query_id):
-        db = CRUD()
+        db = Crud()
         result = db.whereDB(table="tdx_query_param", colum="*", where=f"tdx_query_id='{query_id}'")
         self.tableWidget.setRowCount(len(result))
         for i, data in enumerate(result):

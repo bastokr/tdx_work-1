@@ -8,7 +8,7 @@ from PyQt5.QtGui import QFont
 import xml.etree.ElementTree as ET
 import xml.dom.minidom
 
-from lib.CRUD import CRUD
+from lib.crud import Crud
 
 
 class CodeWindow(QMainWindow):
@@ -59,7 +59,7 @@ class CodeWindow(QMainWindow):
     
     def default_param(self,id):
         
-        db = CRUD() 
+        db = Crud()
         self.id = id; 
         self.result = db.whereDB( table="tdx_query_param", colum="*" , where ="tdx_query_id='"+id+"'")
         i =0

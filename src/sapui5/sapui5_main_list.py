@@ -9,9 +9,9 @@ sys.path.append(current_dir)
 
 # PyQt5 및 기타 모듈 임포트
 from PyQt5.QtWidgets import QApplication, QWidget, QTabWidget, QVBoxLayout
-from lib.CRUD import CRUD
-from sapui5.sapuiTest import WebView
-from sapui5.codeWindow import CodeWindow
+from lib.crud import Crud
+from sapui5.web_view import WebView
+from sapui5.code_window import CodeWindow
 
 
 class Sapui5MainList(QWidget):
@@ -42,7 +42,7 @@ class Sapui5MainList(QWidget):
     def default_param(self, id):
         self.codeView.default_param(id)
 
-        db = CRUD()
+        db = Crud()
         self.id = id
         self.result = db.whereDB(table="tdx_query_param", colum="*", where=f"tdx_query_id='{str(id)}'")
         i = 0

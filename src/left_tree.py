@@ -7,8 +7,8 @@ from PyQt5.QtCore import pyqtSignal
 import psycopg2
 
 from dio.query import Query
-from lib.CRUD import CRUD
-import lib.Databases as Databases
+from lib.crud import Crud
+import lib.databases as Databases
 
 class LeftTree(QWidget):
 
@@ -48,7 +48,7 @@ class LeftTree(QWidget):
  
  
            
-        db = CRUD() 
+        db = Crud()
         self.result = db.readDB( table="tdx_table", colum="*")
         
         for data in self.result:

@@ -5,8 +5,8 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QHBoxLayout
 from PyQt5.QtCore import pyqtSignal, QObject
 
-from lib.CRUD import CRUD
-import lib.Databases as Databases
+from lib.crud import Crud
+import lib.databases as Databases
 
 class SettingDatabaseWidget(QDialog):
     closeDialog = pyqtSignal() # type: ignore
@@ -79,7 +79,7 @@ class SettingDatabaseWidget(QDialog):
             QMessageBox.about(self, 'About Title', 'Table ID cannot be empty.')
             return
 
-        db = CRUD()
+        db = Crud()
         db.insertDB( table="tdx_table", 
                     colum="id, name, description",data=(table_id, table_name, description))
     

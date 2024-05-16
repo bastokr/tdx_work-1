@@ -1,8 +1,8 @@
-from lib.Databases import Databases
+from lib.databases import Databases
 import psycopg2
 import psycopg2.extras  # psycopg2.extras 모듈을 임포트
 
-class CRUD(Databases):
+class Crud(Databases):
     def insertDB(self, table, colum, data):
         sql = "INSERT INTO {} ({}) VALUES %s;".format(table, colum)
         try:
@@ -78,6 +78,6 @@ class CRUD(Databases):
             return []
 
 if __name__ == "__main__":
-    db = CRUD()
+    db = Crud()
     print(db.readDB(table='public.my_table', colum='*'))
     db.updateDB(schema='public', table='my_table', colum='name', value='new_value', condition="id = 1")

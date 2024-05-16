@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QLineEdit, QTextEdit, QPushButton, QTableWidget, QTableWidgetItem, QHBoxLayout, QScrollArea, QComboBox, QMessageBox, QDialog
 from PyQt5.QtCore import Qt
-from lib.CRUD import CRUD
+from lib.crud import Crud
 from query_result_dialog import QueryResultDialog
 from dio.query import Query
 import requests
@@ -56,7 +56,7 @@ class QueryView(QWidget):
         self.setLayout(layout)
 
     def message(self, query: Query):
-        db = CRUD()
+        db = Crud()
         self.result = db.whereDB(table="tdx_query", colum="*", where="id='" + str(query.id) + "'")
         data = self.result[0]
         self.query_id_input.setText(str(query.id))  # 쿼리 ID 값을 정확하게 설정
@@ -65,7 +65,7 @@ class QueryView(QWidget):
         self.gridinit(query.id)
 
     def gridinit(self, id: object):
-        db = CRUD()
+        db = Crud()
         self.id = id
         self.result = db.whereDB(table="tdx_query_param", colum="*", where="tdx_query_id='" + str(id) + "'")
         i = 0
@@ -100,7 +100,7 @@ class QueryView(QWidget):
             print("No item found at row:", row, "and column:", column)
 
     def test_param_query(self):
-        db = CRUD()
+        db = Crud()
         query_id = int(self.query_id_input.text())
         query_template = self.query_input.toPlainText()
 
