@@ -1,9 +1,9 @@
-# src/widget/database_setting_widget.py
 
 import sys
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QLabel, QLineEdit, QPushButton, QHBoxLayout, QMessageBox
 from PyQt5.QtCore import pyqtSignal
 from lib.crud import Crud
+
 class DatabaseSettingWidget(QDialog):
     closeDialog = pyqtSignal(dict)  # type: ignore
 
@@ -16,21 +16,31 @@ class DatabaseSettingWidget(QDialog):
 
         layout = QVBoxLayout()
 
+        # 기본값 설정
+        default_host = "211.232.75.41"
+        default_dbname = "tdx_db"
+        default_user = "tdx_user"
+        default_password = "tdx_password"
+        default_port = "5433"
+
         # Host
         self.host_label = QLabel("Host:")
         self.host_input = QLineEdit()
+        self.host_input.setText(default_host)
         layout.addWidget(self.host_label)
         layout.addWidget(self.host_input)
 
         # Database
         self.db_label = QLabel("Database Name:")
         self.db_input = QLineEdit()
+        self.db_input.setText(default_dbname)
         layout.addWidget(self.db_label)
         layout.addWidget(self.db_input)
 
         # User
         self.user_label = QLabel("User:")
         self.user_input = QLineEdit()
+        self.user_input.setText(default_user)
         layout.addWidget(self.user_label)
         layout.addWidget(self.user_input)
 
@@ -38,12 +48,14 @@ class DatabaseSettingWidget(QDialog):
         self.password_label = QLabel("Password:")
         self.password_input = QLineEdit()
         self.password_input.setEchoMode(QLineEdit.Password)
+        self.password_input.setText(default_password)
         layout.addWidget(self.password_label)
         layout.addWidget(self.password_input)
 
         # Port
         self.port_label = QLabel("Port:")
         self.port_input = QLineEdit()
+        self.port_input.setText(default_port)
         layout.addWidget(self.port_label)
         layout.addWidget(self.port_input)
 
