@@ -4,6 +4,7 @@ from PyQt5.QtGui import QIcon, QPalette, QColor
 from PyQt5.QtCore import Qt, pyqtSignal, QObject
 
 from dio.query import Query
+from sapui5.query_creator import SapUIQueryCreator
 from sapui5.sapui5_left_tree import Sapui5LeftTree
 from sapui5.sapui5_main_list import Sapui5MainList
 from widget.properties_widget import PropertiesWidget
@@ -166,9 +167,13 @@ class MainWindow(QMainWindow):
 
             self.sapui5leftTabView.attributeChange.connect(self.showSapUIQueryParameters)
             self.sapui5leftTabView.attributeQuery.connect(self.showSapUIQueryParameters)
+            self.queryCreator = SapUIQueryCreator()
 
             self.splitter.replaceWidget(0, self.sapui5leftTabView)
             self.splitter.replaceWidget(1, self.sapui5MainView)
+            self.splitter.replaceWidget(2, self.queryCreator)
+            
+             
         except Exception as e:
             QMessageBox.critical(self, "오류", f"쿼리 파라미터를 로드하는 중 오류가 발생했습니다: {str(e)}")
 
