@@ -31,13 +31,17 @@ class Databases:
         if self.db:
             self.db.close()
 
-    def execute(self, query, args={}):
+    def execute(self, query, args={}, return_column_names=False):
         if not self.cursor:
             raise Exception("Database not connected execute")
         self.cursor.execute(query, args)
         rows = self.cursor.fetchall()
-        return rows
-
+        if return_column_names:
+             colnames = [desc[0] for desc in self.cursor.description]
+             return rows, colnames
+        else:
+             return rows
+      
     def commit(self):
         if self.db:
             self.db.commit()

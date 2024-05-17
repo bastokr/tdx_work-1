@@ -1,6 +1,8 @@
 import sys
 import os
 
+from sapui5.grid_window import GridWindow
+
 # 현재 파일의 절대 경로를 가져옴
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -22,13 +24,16 @@ class Sapui5MainList(QWidget):
     def initUI(self):
         self.webView = WebView()
         self.codeView = CodeWindow()
+        self.gridView = GridWindow()
 
         self.webView.show()
         tab2 = QWidget()
 
         tabs = QTabWidget()
-        tabs.addTab(self.webView, 'Tab1')
-        tabs.addTab(self.codeView, 'Tab2')
+        tabs.addTab(self.gridView, '테이블')
+        #tabs.addTab(self.webView, 'Tab1')
+        tabs.addTab(self.codeView, 'xml')
+        tabs.addTab(self.webView, 'webView')
 
         vbox = QVBoxLayout()
         vbox.addWidget(tabs)
@@ -41,6 +46,7 @@ class Sapui5MainList(QWidget):
 
     def default_param(self, id):
         self.codeView.default_param(id)
+        self.gridView.default_param(id)
 
         db = Crud()
         self.id = id

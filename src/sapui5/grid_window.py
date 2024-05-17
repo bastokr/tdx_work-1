@@ -2,7 +2,7 @@ import html
 import os
 import sys
 from turtle import width
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QTextEdit, QPushButton
+from PyQt5.QtWidgets import QApplication,QTableWidgetItem, QTableWidget,QAbstractItemView,QMainWindow, QWidget, QVBoxLayout, QTextEdit, QPushButton
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont
 import xml.etree.ElementTree as ET
@@ -14,6 +14,7 @@ from lib.crud import Crud
 class GridWindow(QMainWindow):
     def __init__(self):
         super().__init__()
+        self.tableWidget = QTableWidget();
 
         self.setWindowTitle("PyQt5 Code Viewer and Executor")
         self.setGeometry(100, 100, 800, 600)
@@ -23,64 +24,55 @@ class GridWindow(QMainWindow):
 
         self.layout = QVBoxLayout()
         self.central_widget.setLayout(self.layout)
-
-        self.code_editor = QTextEdit()
-        #self.code_editor.setFont(QFont("Courier", 10))
-        self.code_editor.setTabStopDistance(20)
-        #self.code_editor.()
-         
-        NS_root = 'https://yys630.tistory.com/'
-        NS_data = 'https://yys630.tistory.com/data'
-        ET.register_namespace('root', NS_root)
-        ET.register_namespace('dt', NS_data)
-        Root = ET.Element('{%s}Root' % NS_root)
-        Data = ET.SubElement(Root, '{%s}Data' % NS_data)
-        Data.attrib['Young'] = 'Rich'
-        Subdata = ET.SubElement(Data, '{%s}Subdata' % NS_data)
-        Subdata.text = 'Always Happy'
-        xml_string = ET.tostring(Root, encoding='utf-8', method='xml')
-        print(xml_string.decode('utf-8'))
-        file_path = 'grid.xml'
-        current_directory = os.path.dirname(os.path.realpath(__file__))
-
-        
-        with open(current_directory+"/"+file_path,'r') as file:
-            self.file_content = file.read() 
-
-        self.code_editor.setText(self.file_content)
-        
  
-        self.layout.addWidget(self.code_editor)
+         
 
         self.execute_button = QPushButton("Execute")
         self.execute_button.clicked.connect(self.execute_code)
         self.layout.addWidget(self.execute_button, alignment=Qt.AlignRight)
+        
+         
+        self.tableWidget.setColumnCount(10)
+
+        self.tableWidget.setEditTriggers(QAbstractItemView.NoEditTriggers) # type: ignore
+        # self.tableWidget.setEditTriggers(QAbstractItemView.DoubleClicked)
+        # self.tableWidget.setEditTriggers(QAbstractItemView.AllEditTriggers)
+        
+        self.tableWidget.setHorizontalHeaderLabels(["선택","id", "테이브id","컬럼명","타입"])  
+        #self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.tableWidget.horizontalHeader().resizeSection(0,50)
+        
+        self.layout.addWidget(self.tableWidget)
         
     
     def default_param(self,id):
         
         db = Crud()
         self.id = id; 
-        self.result , colnames = db.whereDB( table="tdx_query_param", column="*" , where ="tdx_query_id='"+id+"'",return_column_names=True)
+        #self.result , colnames = db.whereDB( table="tdx_query", column="*" , where ="id='"+id+"'",return_column_names=True)
+        
+        self.result , colnames = db.execute("select * from member", return_column_names=True)
+        
+        self.tableWidget.setColumnCount(len(colnames))
+        self.tableWidget.setHorizontalHeaderLabels(colnames)  
+        self.tableWidget.setRowCount(len(self.result))
+
+        
+        for i, data in enumerate(self.result): 
+             
+            for j, value in enumerate(data):
+                item = QTableWidgetItem(str(value))
+                item.setTextAlignment( Qt.AlignCenter)
+
+                self.tableWidget.setItem(i, j, item)
+            
+            #self.tableWidget.cellChanged.connect(self.onCellChanged)
+       
         
         i =0
       #result.count
         
-        for i, data in enumerate(self.result):
-            print(data[2])
-            #self.add_parameter(data[2], data[1])
-            
-            colm = '''<Column width="11rem">
-						<m:Label text="Product Name" />
-						<template>
-							<m:Text text="{ }" wrapping="false" />
-						</template>
-                    </Column>''' 
-                    
-            self.file_content = self.file_content.replace("[columnData]", colm)
-            self.code_editor.setText(self.file_content)
-
-
+         
                 
 
     
