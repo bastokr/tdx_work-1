@@ -24,3 +24,6 @@ pip install qdarkstyle
 
 
 pip install PyQtWebEngine
+
+
+ pip install pyqt-toast-notification

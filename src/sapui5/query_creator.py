@@ -1,5 +1,7 @@
 from PyQt5.QtWidgets import QApplication, QDialog, QVBoxLayout, QLabel, QLineEdit, QTextEdit, QWidget, QPushButton, QHBoxLayout, QScrollArea, QMessageBox, QComboBox
 import requests
+from PyQt5.QtCore import Qt
+
 
 from lib.crud import Crud
 
@@ -31,6 +33,7 @@ class SapUIQueryCreator(QDialog):
         self.query_exp_input = QLineEdit()
         layout.addWidget(QLabel("퀴리:"))
         self.query_exp_input.setFixedHeight(200)
+        self.query_exp_input.setAlignment(Qt.AlignmentFlag.AlignTop)
         layout.addWidget(self.query_exp_input)
 
         # Parameters Section

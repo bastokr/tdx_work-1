@@ -16,6 +16,8 @@ from widget.make_dynamic_table_widget import MakeDynamicTableWidget
 from query_creator import QueryCreator
 from widget.database_setting_widget import DatabaseSettingWidget
 from lib.crud import Crud
+from pyqttoast import Toast, ToastPreset
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -132,6 +134,18 @@ class MainWindow(QMainWindow):
         self.lefttree.attributeChange.connect(self.properties_widget.message)
         self.lefttree.attributeChange.connect(self.main.message)
 
+        settings = {
+            "host":"211.232.75.41",
+            "dbname":"tdx_db",
+            "user": "tdx_user",
+            "password":  "tdx_password",
+            "port": "5433",
+        }
+         
+
+
+        self.save_db_settings(settings)
+
         self.setupUI()
 
     def setupUI(self):
@@ -224,14 +238,24 @@ class MainWindow(QMainWindow):
         db_settings_dialog.exec_()
 
     def save_db_settings(self, settings):
-        self.db_settings = settings
-        print("self.db_settings:", self.db_settings)  # 딕셔너리 출력
-        self.db.set_settings(settings)  # 데이터베이스 연결 설정
-        QMessageBox.information(self, "Settings Saved", "Database settings saved successfully.")
+        self.db_settings = settings  # Store the provided settings in the instance attribute
+        print("self.db_settings:", self.db_settings)  # Print the settings for debugging
+        self.db.set_settings(settings)  # Update the database connection with the new settings
+    
+        # Show a custom Snackbar instead of a QMessageBox
+        self.show_toast("TDX message","Database settings saved successfully.")  # Create a Snackbar instance
+         
         self.lefttree.db.set_settings(settings)  # LeftTree에 데이터베이스 설정 전달
         self.lefttree.refresh_data()  # 데이터베이스 설정 후 데이터를 갱신
-
-
+    
+        # Shows a toast notification every time the button is clicked
+    def show_toast(self,title,message):
+        toast = Toast(self)
+        toast.setDuration(2000)  # Hide after 5 seconds
+        toast.setTitle(title)
+        toast.setText(message)
+        toast.applyPreset(ToastPreset.SUCCESS)  # Apply style preset
+        toast.show()
 class MyApp(QApplication):
     def applicationSupportsSecureRestorableState(self):
         return True
