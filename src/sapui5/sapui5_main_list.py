@@ -53,6 +53,9 @@ class Sapui5MainList(QWidget):
         self.result = db.whereDB(table="tdx_query_param", column="*", where=f"tdx_query_id='{str(id)}'")
         i = 0
         # result.count
+        
+    def showGrid(self,str):
+        self.gridView.showGrid(str)
 
 
 if __name__ == "__main__":

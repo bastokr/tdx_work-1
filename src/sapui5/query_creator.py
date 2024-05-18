@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QApplication, QDialog, QVBoxLayout, QLabel, QLineEdit, QTextEdit, QWidget, QPushButton, QHBoxLayout, QScrollArea, QMessageBox, QComboBox
 import requests
 from PyQt5.QtCore import Qt
+from PyQt5.QtCore import pyqtSignal 
 
 
 from lib.crud import Crud
@@ -16,6 +17,8 @@ def clear_layout(layout):
             #clear_layout(item.layout())
             
 class SapUIQueryCreator(QDialog):
+    replaceGrid = pyqtSignal(str)
+    
     def __init__(self, parent=None):
         super().__init__(parent)
         self.parameter_widgets = []
@@ -26,6 +29,7 @@ class SapUIQueryCreator(QDialog):
                 
                 
     def setup_ui(self):
+        self.query_text = ""
         self.setWindowTitle("Create Query")
         self.setFixedSize(500, 600)
         layout = QVBoxLayout()
@@ -50,35 +54,48 @@ class SapUIQueryCreator(QDialog):
         layout.addWidget(params_scroll_area)
         # Add Parameter Button
         button_layout = QHBoxLayout()
-        add_param_btn = QPushButton('Add Parameter')
-        add_param_btn.clicked.connect(lambda: self.add_parameter("", ""))
+        add_param_btn = QPushButton('쿼리반영')
+        add_param_btn.clicked.connect(lambda: self.replaceQuery())
+        
         button_layout.addWidget(add_param_btn)
         button_layout.addStretch(1)
         layout.addLayout(button_layout)
         # Save Query Button
-        save_query_btn = QPushButton('Save Query')
-        save_query_btn.clicked.connect(self.save_query)
+        save_query_btn = QPushButton('쿼리 조회')
+        save_query_btn.clicked.connect(self.search_query)
         #layout.addStretch(1) 
         layout.addWidget(save_query_btn)
         self.setLayout(layout)
+    
+    def replaceQuery(self):
+        try:
+            query_value=self.query_text;
+            for _, name_input,type_input, value_input in self.parameter_widgets:
+                print(name_input.text())
+                print(value_input.text())
+                query_value = query_value.replace(name_input.text(),"'"+value_input.text()+"'")
+                
+                #parameters.append({
+                #    "parameter": name_input.text(),
+                #    "attribute": type_input.currentText(),
+                #    "value": value_input.text()
+                #}) 
+            self.query_exp_input.setText(query_value)
+        except Exception as e:   
+                QMessageBox.critical(self, "오류", f"쿼리 파라미터를 로드하는 중 오류가 발생했습니다: {str(e)}")
+
+         
         
     def default_param(self,id):
         clear_layout(self.params_layout)
         db = Crud()
         self.result = db.whereDB( table="tdx_query", column="*" , where ="id='"+str(id)+"'")
         #self.result[0][4]
+        self.query_text = self.result[0][3]
         self.query_exp_input.setText(self.result[0][3])
-
-        
-
-        
         self.id = id; 
         self.result = db.whereDB( table="tdx_query_param", column="*" , where ="tdx_query_id='"+str(id)+"'")
-        
         i =0
-        
-         
-        #result.count
         for i, data in enumerate(self.result):
             self.add_parameter(data[2], data[1])
             
@@ -118,14 +135,8 @@ class SapUIQueryCreator(QDialog):
         widget.deleteLater()
         self.parameter_widgets = [pw for pw in self.parameter_widgets if pw[0] != widget]
 
-    def save_query(self):
-        parameters = []
-        for _, name_input, type_input, value_input in self.parameter_widgets:
-            parameters.append({
-                "parameter": name_input.text(),
-                "attribute": type_input.currentText(),
-                "value": value_input.text()
-            }) 
+    def search_query(self):
+        self.replaceGrid.emit(self.query_exp_input.text())
         
         
     def loadQuery(self, query):

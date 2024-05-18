@@ -187,6 +187,8 @@ class MainWindow(QMainWindow):
             self.splitter.replaceWidget(0, self.sapui5leftTabView)
             self.splitter.replaceWidget(1, self.sapui5MainView)
             self.splitter.replaceWidget(2, self.queryCreator)
+            
+            self.queryCreator.replaceGrid.connect(self.sapui5MainView.showGrid)
             #self.queryCreator.default_param(query.id)
             
              

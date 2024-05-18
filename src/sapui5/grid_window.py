@@ -45,7 +45,7 @@ class GridWindow(QMainWindow):
         self.layout.addWidget(self.tableWidget)
         
     
-    def default_param(self,id):
+    def default_param(self,id ):
         
         db = Crud()
         self.id = id; 
@@ -75,8 +75,29 @@ class GridWindow(QMainWindow):
          
                 
 
-    
+    def showGrid(self,query_text):
+        print(query_text)
+        db = Crud()
+        self.id = id; 
+        self.result , colnames = db.execute(query_text, return_column_names=True)
+        self.tableWidget.clear()
+        self.tableWidget.setColumnCount(len(colnames))
+        self.tableWidget.setHorizontalHeaderLabels(colnames)  
+        self.tableWidget.setRowCount(len(self.result))
+
         
+        for i, data in enumerate(self.result): 
+             
+            for j, value in enumerate(data):
+                item = QTableWidgetItem(str(value))
+                item.setTextAlignment( Qt.AlignCenter)
+
+                self.tableWidget.setItem(i, j, item)
+            
+            #self.tableWidget.cellChanged.connect(self.onCellChanged)
+       
+        
+         
          
 
     def execute_code(self):
