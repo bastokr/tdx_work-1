@@ -157,21 +157,23 @@ class MainWindow(QMainWindow):
             self.splitter.replaceWidget(2, self.queryCreator)
             self.queryview.message(query)
             self.queryCreator.default_param(query.id)
-        except Exception as e:
+        except Exception as e:   
             QMessageBox.critical(self, "오류", f"쿼리 파라미터를 로드하는 중 오류가 발생했습니다: {str(e)}")
 
     def showSapui5Viewer(self, query: Query):
         try:
             self.sapui5leftTabView = Sapui5LeftTree()
             self.sapui5MainView = Sapui5MainList()
-
+ 
             self.sapui5leftTabView.attributeChange.connect(self.showSapUIQueryParameters)
             self.sapui5leftTabView.attributeQuery.connect(self.showSapUIQueryParameters)
             self.queryCreator = SapUIQueryCreator()
+         
 
             self.splitter.replaceWidget(0, self.sapui5leftTabView)
             self.splitter.replaceWidget(1, self.sapui5MainView)
             self.splitter.replaceWidget(2, self.queryCreator)
+            #self.queryCreator.default_param(query.id)
             
              
         except Exception as e:
@@ -179,7 +181,8 @@ class MainWindow(QMainWindow):
 
     def showSapUIQueryParameters(self, query: Query):
         try:
-            self.sapui5MainView.default_param(query.id)
+            self.sapui5MainView.default_param(query.id) 
+            self.queryCreator.default_param(query.id)
         except Exception as e:
             QMessageBox.critical(self, "오류", f"쿼리 파라미터를 로드하는 중 오류가 발생했습니다: {str(e)}")
 

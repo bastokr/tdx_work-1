@@ -3,16 +3,36 @@ import requests
 
 from lib.crud import Crud
 
+def clear_layout(layout):
+    while layout.count():
+        item = layout.takeAt(0)
+        widget = item.widget()
+        if widget is not None:
+            widget.deleteLater()
+        #else:
+            # 만약 레이아웃 안에 또 다른 레이아웃이 있는 경우
+            #clear_layout(item.layout())
+            
 class SapUIQueryCreator(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.parameter_widgets = []
         self.setup_ui()
-
+        
+ 
+                
+                
+                
     def setup_ui(self):
         self.setWindowTitle("Create Query")
         self.setFixedSize(500, 600)
         layout = QVBoxLayout()
+        
+        self.query_exp_input = QLineEdit()
+        layout.addWidget(QLabel("퀴리:"))
+        self.query_exp_input.setFixedHeight(200)
+        layout.addWidget(self.query_exp_input)
+
         # Parameters Section
         params_container = QWidget()
         self.params_layout = QVBoxLayout(params_container)
@@ -40,10 +60,21 @@ class SapUIQueryCreator(QDialog):
         self.setLayout(layout)
         
     def default_param(self,id):
+        clear_layout(self.params_layout)
         db = Crud()
+        self.result = db.whereDB( table="tdx_query", column="*" , where ="id='"+str(id)+"'")
+        #self.result[0][4]
+        self.query_exp_input.setText(self.result[0][3])
+
+        
+
+        
         self.id = id; 
         self.result = db.whereDB( table="tdx_query_param", column="*" , where ="tdx_query_id='"+str(id)+"'")
+        
         i =0
+        
+         
         #result.count
         for i, data in enumerate(self.result):
             self.add_parameter(data[2], data[1])
@@ -72,6 +103,7 @@ class SapUIQueryCreator(QDialog):
         name_input.setText(colname)
         type_input.setCurrentText(datatype)
         
+        #self.remove_parameter(param_widget)
         self.params_layout.addWidget(param_widget)
         self.params_layout.insertWidget(self.params_layout.count()-2,param_widget)
         if(self.params_layout.count()==1):
@@ -84,30 +116,15 @@ class SapUIQueryCreator(QDialog):
         self.parameter_widgets = [pw for pw in self.parameter_widgets if pw[0] != widget]
 
     def save_query(self):
-        query_name = self.query_name_input.text()
-        query_text = self.query_input.toPlainText()
         parameters = []
         for _, name_input, type_input, value_input in self.parameter_widgets:
             parameters.append({
                 "parameter": name_input.text(),
                 "attribute": type_input.currentText(),
                 "value": value_input.text()
-            })
-        query_data = {
-            "title": query_name,
-            "query": query_text,
-            "parameters": parameters
-        }
-        url = "http://localhost:8081/api/v1/query"
-        try:
-            response = requests.post(url, json=query_data)
-            if response.status_code == 201:
-                QMessageBox.information(self, "Success", "Query saved successfully")
-            else:
-                QMessageBox.warning(self, "Error", f"Failed to save query: {response.text}")
-        except requests.exceptions.RequestException as e:
-            QMessageBox.critical(self, "Error", f"An error occurred: {str(e)}")
-
+            }) 
+        
+        
     def loadQuery(self, query):
         try:
             self.query_name_input.setText(query.get('title', ''))
@@ -121,9 +138,4 @@ class SapUIQueryCreator(QDialog):
         except Exception as e:
             QMessageBox.critical(self, "Error Loading Query", f"Failed to load query details: {str(e)}")
 
-
-if __name__ == "__main__":
-    import sys
-    app = QApplication(sys.argv)
-    editor = QueryCreator()
-    editor.exec_()
+ 

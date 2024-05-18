@@ -22,3 +22,5 @@
 
 pip install qdarkstyle
 
+
+pip install PyQtWebEngine
