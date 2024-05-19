@@ -59,6 +59,7 @@ class QueryCreator(QDialog):
         self.setLayout(layout)
     
     def default_param(self,id):
+        self.parameter_widgets = []
         db = Crud()
         self.id = id; 
         self.result = db.whereDB( table="tdx_query_param", column="*" , where ="tdx_query_id='"+str(id)+"'")

@@ -71,10 +71,12 @@ class SapUIQueryCreator(QDialog):
         try:
             query_value=self.query_text;
             for _, name_input,type_input, value_input in self.parameter_widgets:
-                print(name_input.text())
-                print(value_input.text())
-                query_value = query_value.replace(name_input.text(),"'"+value_input.text()+"'")
-                
+                try:
+                    print(name_input.text())
+                    print(value_input.text())
+                    query_value = query_value.replace(name_input.text(),"'"+value_input.text()+"'")
+                except Exception as e:   
+                    print(e) 
                 #parameters.append({
                 #    "parameter": name_input.text(),
                 #    "attribute": type_input.currentText(),

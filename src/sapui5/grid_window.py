@@ -2,7 +2,7 @@ import html
 import os
 import sys
 from turtle import width
-from PyQt5.QtWidgets import QApplication,QTableWidgetItem, QTableWidget,QAbstractItemView,QMainWindow, QWidget, QVBoxLayout, QTextEdit, QPushButton
+from PyQt5.QtWidgets import QApplication,QMessageBox,QTableWidgetItem, QTableWidget,QAbstractItemView,QMainWindow, QWidget, QVBoxLayout, QTextEdit, QPushButton
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont
 import xml.etree.ElementTree as ET
@@ -54,9 +54,6 @@ class GridWindow(QMainWindow):
         self.result , colnames = db.execute("select * from member", return_column_names=True)
         
         self.tableWidget.setColumnCount(len(colnames))
-        self.tableWidget.setHorizontalHeaderLabels(colnames)  
-        self.tableWidget.setRowCount(len(self.result))
-
         
         for i, data in enumerate(self.result): 
              
@@ -79,26 +76,31 @@ class GridWindow(QMainWindow):
         print(query_text)
         db = Crud()
         self.id = id; 
-        self.result , colnames = db.execute(query_text, return_column_names=True)
-        self.tableWidget.clear()
-        self.tableWidget.setColumnCount(len(colnames))
-        self.tableWidget.setHorizontalHeaderLabels(colnames)  
-        self.tableWidget.setRowCount(len(self.result))
+        try:
+            self.result , colnames = db.execute(query_text,return_column_names=True)
+            self.tableWidget.clear()
+            self.tableWidget.setColumnCount(len(colnames))
+            self.tableWidget.setHorizontalHeaderLabels(colnames)  
+            self.tableWidget.setRowCount(len(self.result))
 
-        
-        for i, data in enumerate(self.result): 
-             
-            for j, value in enumerate(data):
-                item = QTableWidgetItem(str(value))
-                item.setTextAlignment( Qt.AlignCenter)
+            if (len(colnames)==1): 
+                self.tableWidget.setColumnWidth(0, 300)  # 첫 번째 열의 너비를 100 픽셀로 설정
 
-                self.tableWidget.setItem(i, j, item)
-            
-            #self.tableWidget.cellChanged.connect(self.onCellChanged)
-       
+              
         
-         
-         
+        
+            for i, data in enumerate(self.result): 
+                
+                for j, value in enumerate(data):
+                    item = QTableWidgetItem(str(value))
+                    item.setTextAlignment( Qt.AlignCenter)
+
+                    self.tableWidget.setItem(i, j, item)
+                
+                #self.tableWidget.cellChanged.connect(self.onCellChanged)
+        except Exception as e:
+            QMessageBox.critical(self, "오류", f"쿼리 파라미터를 로드하는 중 오류가 발생했습니다: {str(e)}")
+
 
     def execute_code(self):
         code = self.code_editor.toPlainText()

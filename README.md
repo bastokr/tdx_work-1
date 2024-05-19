@@ -25,5 +25,5 @@ pip install qdarkstyle
 
 pip install PyQtWebEngine
 
-
+# 토스트 메세지 추가
  pip install pyqt-toast-notification
