@@ -78,9 +78,7 @@ class MainWindow(QMainWindow):
         
          
         database_menu = self.menubar.addMenu("SAPUI5")
-        database_menu.addAction(self.sapui5_action)
-        database_menu.addSeparator()
-        database_menu.addAction(self.quit_action)
+        database_menu.addAction(self.sapui5_action) 
 
         
         # help menu
@@ -99,12 +97,7 @@ class MainWindow(QMainWindow):
         self.toolbar.addSeparator()
         self.toolbar.addAction(self.setting_action)
         self.toolbar.addAction(self.envelope_action)
-
-        query_menu = self.menubar.addMenu("Query")
-        create_query_action = QAction("Create Query", self)
-        query_menu.addAction(create_query_action)
-        create_query_action.triggered.connect(self.open_query_creator)
-
+ 
         self.table_action.triggered.connect(self.dialog_table_create_open)
 
         self.lefttree = LeftTree()

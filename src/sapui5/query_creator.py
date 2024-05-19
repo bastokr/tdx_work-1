@@ -74,7 +74,12 @@ class SapUIQueryCreator(QDialog):
                 try:
                     print(name_input.text())
                     print(value_input.text())
-                    query_value = query_value.replace(name_input.text(),"'"+value_input.text()+"'")
+                    if(type_input.currentText() == 'integer'):
+                        query_value = query_value.replace(name_input.text(),value_input.text())
+                    else:
+                        query_value = query_value.replace(name_input.text(),"'"+value_input.text()+"'")
+
+
                 except Exception as e:   
                     print(e) 
                 #parameters.append({
@@ -138,6 +143,8 @@ class SapUIQueryCreator(QDialog):
         self.parameter_widgets = [pw for pw in self.parameter_widgets if pw[0] != widget]
 
     def search_query(self):
+        if(self.query_exp_input.find(":") > -1):
+            self.replaceQuery()
         self.replaceGrid.emit(self.query_exp_input.text())
         
         
