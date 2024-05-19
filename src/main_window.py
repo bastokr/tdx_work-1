@@ -34,68 +34,59 @@ class MainWindow(QMainWindow):
         # 데이터베이스 연결 초기화
         self.db = Crud()
 
-        # file menu action
-        self.new_action = QAction("New")
-        self.new_action.triggered.connect(self.showSapui5Viewer)
+        # file menu action 
+        
+        
+        self.sapui5_action = QAction("sapui5")
+        self.sapui5_action.triggered.connect(self.showSapui5Viewer)
 
         self.quit_action = QAction("Quit")
         self.quit_action.triggered.connect(self.close)
+        
+        self.table_action = QAction("메인화면")
+        self.table_action.triggered.connect(self.dialog_table_create_open)
 
-        self.table_action = QAction("Table")
-        self.table_action.triggered.connect(self.dialog_open)
-
-        self.db_settings_action = QAction("Database Settings")
+        self.db_settings_action = QAction("DB 설정")
         self.db_settings_action.triggered.connect(self.show_db_settings_dialog)
 
-        # help menu action
-        self.doc_action = QAction("Documentation")
-        self.release_action = QAction("Release Notes")
-        self.license_action = QAction("View License")
+
+        self.table_action = QAction("테이블생성")
+        self.table_action.triggered.connect(self.dialog_table_create_open)
+        
+        self.table_mgt_action = QAction("테이블관리")
+        self.table_mgt_action.triggered.connect(self.showTableParameters)
+        
+        
+ 
+          
 
         # file menu
-        file_menu = self.menubar.addMenu("DataBase")
-        file_menu.addAction(self.table_action)
-        file_menu.addAction(self.db_settings_action)
-        file_menu.addSeparator()
-        file_menu.addAction(self.quit_action)
+        database_menu = self.menubar.addMenu("DataBase")
+        
+        database_menu.addAction(self.db_settings_action)
+        database_menu.addSeparator()
 
-        file_menu = self.menubar.addMenu("Edit")
-        file_menu.addAction(self.new_action)
-        file_menu.addSeparator()
-        file_menu.addAction(self.quit_action)
+        database_menu.addAction(self.table_action)  
+        database_menu.addSeparator()
+        database_menu.addAction(self.table_mgt_action)
+        
+        
+        database_menu.addSeparator()
+        database_menu.addAction(self.quit_action)
+ 
+ 
+        
+         
+        database_menu = self.menubar.addMenu("SAPUI5")
+        database_menu.addAction(self.sapui5_action)
+        database_menu.addSeparator()
+        database_menu.addAction(self.quit_action)
 
-        file_menu = self.menubar.addMenu("Selection")
-        file_menu.addAction(self.new_action)
-        file_menu.addSeparator()
-        file_menu.addAction(self.quit_action)
-
-        file_menu = self.menubar.addMenu("View")
-        file_menu.addAction(self.new_action)
-        file_menu.addSeparator()
-        file_menu.addAction(self.quit_action)
-
-        file_menu = self.menubar.addMenu("oData")
-        file_menu.addAction(self.new_action)
-        file_menu.addSeparator()
-        file_menu.addAction(self.quit_action)
-
-        file_menu = self.menubar.addMenu("Make")
-        file_menu.addAction(self.new_action)
-        file_menu.addSeparator()
-        file_menu.addAction(self.quit_action)
-
-        file_menu = self.menubar.addMenu("Run")
-        file_menu.addAction(self.new_action)
-        file_menu.addSeparator()
-        file_menu.addAction(self.quit_action)
-
+        
         # help menu
-        help_menu = self.menubar.addMenu("Help")
-        help_menu.addAction(self.doc_action)
-        help_menu.addAction(self.release_action)
-        help_menu.addAction(self.license_action)
+        help_menu = self.menubar.addMenu("Help")  
         self.home_action = QAction(QIcon("src/img/home.png"), 'home')
-        self.home_action.triggered.connect(self.close)
+        self.home_action.triggered.connect(self.home)
 
         self.setting_action = QAction(QIcon("src/img/settings.png"), 'settings')
         self.setting_action.triggered.connect(self.setting)
@@ -114,7 +105,7 @@ class MainWindow(QMainWindow):
         query_menu.addAction(create_query_action)
         create_query_action.triggered.connect(self.open_query_creator)
 
-        self.table_action.triggered.connect(self.dialog_open)
+        self.table_action.triggered.connect(self.dialog_table_create_open)
 
         self.lefttree = LeftTree()
         self.main = MainList()
@@ -147,6 +138,18 @@ class MainWindow(QMainWindow):
         self.save_db_settings(settings)
 
         self.setupUI()
+        
+    
+    def showTableParameters(self ):
+        try: 
+
+            self.splitter.replaceWidget(1, self.lefttree)
+            self.splitter.replaceWidget(1, self.main)
+            self.splitter.replaceWidget(2, self.properties_widget)  
+        except Exception as e:   
+            QMessageBox.critical(self, "오류", f"쿼리 파라미터를 로드하는 중 오류가 발생했습니다: {str(e)}")
+
+   
 
     def setupUI(self):
         self.lefttree.attributeChange.connect(self.showTableDetails)
@@ -202,7 +205,7 @@ class MainWindow(QMainWindow):
         except Exception as e:
             QMessageBox.critical(self, "오류", f"쿼리 파라미터를 로드하는 중 오류가 발생했습니다: {str(e)}")
 
-    def dialog_open(self):
+    def dialog_table_create_open(self):
         self.dialog = QDialog()
         self.dialog.setWindowTitle('My Dialog')
         layout = QHBoxLayout(self.dialog)
@@ -223,6 +226,12 @@ class MainWindow(QMainWindow):
 
     def setting(self):
         print('setting toolbar clicked')
+    
+    
+
+    def home(self):
+        print('setting toolbar clicked')
+        self.showTableParameters()
 
     def envelope(self):
         print('envelope toolbar clicked')
