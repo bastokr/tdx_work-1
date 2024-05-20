@@ -143,7 +143,7 @@ class SapUIQueryCreator(QDialog):
         self.parameter_widgets = [pw for pw in self.parameter_widgets if pw[0] != widget]
 
     def search_query(self):
-        if(self.query_exp_input.find(":") > -1):
+        if(self.query_exp_input.text().find(":") > -1):
             self.replaceQuery()
         self.replaceGrid.emit(self.query_exp_input.text())
         
