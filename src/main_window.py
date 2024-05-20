@@ -1,7 +1,8 @@
 import sys
 from PyQt5.QtWidgets import *
-from PyQt5.QtGui import QIcon, QPalette, QColor
-from PyQt5.QtCore import Qt, pyqtSignal, QObject
+from PyQt5.QtGui import QIcon, QPalette
+from PyQt5.QtCore import Qt
+import configparser
 
 from dio.query import Query
 from sapui5.query_creator import SapUIQueryCreator
@@ -30,13 +31,13 @@ class MainWindow(QMainWindow):
         self.setWindowIcon(QIcon('src/img/web.png'))
 
         self.db_settings = {}
-
+        self.load_db_config()
         # 데이터베이스 연결 초기화
         self.db = Crud()
+        if self.db_settings:  # 설정이 있으면 데이터베이스 연결 시도
+            self.db.set_settings(self.db_settings)
 
         # file menu action 
-        
-        
         self.sapui5_action = QAction("sapui5")
         self.sapui5_action.triggered.connect(self.showSapui5Viewer)
 
@@ -55,11 +56,6 @@ class MainWindow(QMainWindow):
         
         self.table_mgt_action = QAction("테이블관리")
         self.table_mgt_action.triggered.connect(self.showTableParameters)
-        
-        
- 
-          
-
         # file menu
         database_menu = self.menubar.addMenu("DataBase")
         
@@ -70,13 +66,9 @@ class MainWindow(QMainWindow):
         database_menu.addSeparator()
         database_menu.addAction(self.table_mgt_action)
         
-        
         database_menu.addSeparator()
         database_menu.addAction(self.quit_action)
  
- 
-        
-         
         database_menu = self.menubar.addMenu("SAPUI5")
         database_menu.addAction(self.sapui5_action) 
 
@@ -117,18 +109,6 @@ class MainWindow(QMainWindow):
 
         self.lefttree.attributeChange.connect(self.properties_widget.message)
         self.lefttree.attributeChange.connect(self.main.message)
-
-        settings = {
-            "host":"211.232.75.41",
-            "dbname":"tdx_db",
-            "user": "tdx_user",
-            "password":  "tdx_password",
-            "port": "5433",
-        }
-         
-
-
-        self.save_db_settings(settings)
 
         self.setupUI()
         
@@ -242,9 +222,11 @@ class MainWindow(QMainWindow):
         db_settings_dialog.exec_()
 
     def save_db_settings(self, settings):
-        self.db_settings = settings  # Store the provided settings in the instance attribute
-        print("self.db_settings:", self.db_settings)  # Print the settings for debugging
-        self.db.set_settings(settings)  # Update the database connection with the new settings
+        config = configparser.ConfigParser()
+        config['Database'] = settings
+        with open('config.ini', 'w') as configfile:
+            config.write(configfile)
+        self.db.set_settings(settings)
     
         # Show a custom Snackbar instead of a QMessageBox
         self.show_toast("TDX message","Database settings saved successfully.")  # Create a Snackbar instance
@@ -260,6 +242,41 @@ class MainWindow(QMainWindow):
         toast.setText(message)
         toast.applyPreset(ToastPreset.SUCCESS)  # Apply style preset
         toast.show()
+
+    def load_db_config(self):
+        import os
+        
+
+        # 현재 스크립트의 디렉토리 가져오기
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        # config.ini 파일의 절대 경로 생성
+        config_path = os.path.join(script_dir, 'config.ini')
+        abs_config_path = os.path.abspath(config_path)
+        print(f"Loading configuration from: {abs_config_path}")
+
+        if not os.path.exists(abs_config_path):
+            print("Configuration file does not exist.")
+            return
+
+        config = configparser.ConfigParser()
+        config.read(abs_config_path)
+
+        print("Configuration file content:")
+        with open(abs_config_path, 'r') as f:
+            print(f.read())
+
+        if 'Database' in config:
+            print('config.ini 파일 기반 데이터베이스 설정')
+            self.db_settings = {
+                'host': config.get('Database', 'host', fallback=''),
+                'dbname': config.get('Database', 'dbname', fallback=''),
+                'user': config.get('Database', 'user', fallback=''),
+                'password': config.get('Database', 'password', fallback=''),
+                'port': config.get('Database', 'port', fallback='')
+            }
+        else:
+            print('Database 설정이 없습니다.')
+
 class MyApp(QApplication):
     def applicationSupportsSecureRestorableState(self):
         return True

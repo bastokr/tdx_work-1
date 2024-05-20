@@ -13,6 +13,7 @@ class Databases:
 
     def connect(self, settings):
         try:
+            settings.setdefault('connect_timeout', 3)  # Set default timeout to 3 seconds
             logging.info(f"Attempting to connect with settings: {settings}")
             self.db = psycopg2.connect(**settings)
             self.cursor = self.db.cursor(cursor_factory=psycopg2.extras.DictCursor)

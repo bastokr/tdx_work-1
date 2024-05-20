@@ -70,9 +70,3 @@ class LeftTree(QWidget):
             query_id = int(it.text(2))
             query = Query(id=it.text(2), http_request=it.text(1), odata_query_name=it.text(0), query=it.text(3), title=it.text(4))
             self.attributeQuery.emit(query)
-
-
-        
-        
-
- 

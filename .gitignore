@@ -7,3 +7,4 @@
 src/__pycache__/main_view.cpython-310.pyc
 src/lib/__pycache__/CRUD.cpython-310.pyc
 src/lib/__pycache__/Databases.cpython-310.pyc
+.vscode/launch.json
