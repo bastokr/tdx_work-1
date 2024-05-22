@@ -4,6 +4,7 @@ from lib.crud import Crud
 from query_result_dialog import QueryResultDialog
 from dio.query import Query
 import requests
+from odata_query_result_dialog import ODataQueryResultDialog
 
 
 class QueryView(QWidget):
@@ -164,7 +165,11 @@ class QueryView(QWidget):
             response = requests.get(odata_url)
             if response.status_code == 200:
                 result = response.json()
-                self.display_results(result['value'])
+                if 'value' in result:
+                    dialog = ODataQueryResultDialog(result['value'], self)
+                    dialog.exec_()
+                else:
+                    QMessageBox.warning(self, "Error", "No 'value' key in OData response")
             else:
                 QMessageBox.warning(self, "Error", f"OData request failed: {response.text}")
         except requests.exceptions.RequestException as e:
