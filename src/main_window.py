@@ -18,7 +18,7 @@ from query_creator import QueryCreator
 from widget.database_setting_widget import DatabaseSettingWidget
 from lib.crud import Crud
 from pyqttoast import Toast, ToastPreset
-
+from tab_widget import TabWidget
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -32,10 +32,38 @@ class MainWindow(QMainWindow):
 
         self.db_settings = {}
         self.load_db_config()
-        # 데이터베이스 연결 초기화
         self.db = Crud()
-        if self.db_settings:  # 설정이 있으면 데이터베이스 연결 시도
+        if self.db_settings:
             self.db.set_settings(self.db_settings)
+
+        self.lefttree = LeftTree()
+        self.main = MainList()
+        self.properties_widget = PropertiesWidget()
+
+        self.setupUI()
+
+    def setupUI(self):
+        main_layout = QVBoxLayout()
+        hbox_layout = QHBoxLayout()
+        tab_widget = TabWidget()
+        
+        hbox_layout.addWidget(self.lefttree)
+        hbox_layout.addWidget(self.main)
+        hbox_layout.addWidget(self.properties_widget)
+
+        main_layout.addLayout(hbox_layout)
+        main_layout.addWidget(tab_widget)
+
+        central_widget = QWidget()
+        central_widget.setLayout(main_layout)
+        self.setCentralWidget(central_widget)
+
+        self.lefttree.attributeChange.connect(self.properties_widget.message)
+        self.lefttree.attributeChange.connect(self.main.message)
+
+        self.menubar = self.menuBar()
+        self.menubar.setNativeMenuBar(False)
+        self.setContentsMargins(0, 0, 0, 0)
 
         # file menu action 
         self.sapui5_action = QAction("sapui5")
@@ -92,25 +120,9 @@ class MainWindow(QMainWindow):
  
         self.table_action.triggered.connect(self.dialog_table_create_open)
 
-        self.lefttree = LeftTree()
-        self.main = MainList()
-        self.splitter = QSplitter(Qt.Horizontal)
-        right_widget = QLabel("Layer 2")
-        self.lefttree.setGeometry(0, 0, 100, 1000)
+        self.lefttree.attributeChange.connect(self.showTableDetails)
+        self.lefttree.attributeQuery.connect(self.showQueryParameters)
 
-        self.splitter.addWidget(self.lefttree)
-        self.splitter.addWidget(self.main)
-
-        self.setCentralWidget(self.splitter)
-        self.properties_widget = PropertiesWidget()
-        self.splitter.addWidget(self.properties_widget)
-
-        self.lefttree.attributeChange.connect(self.properties_widget.message)
-        self.lefttree.attributeChange.connect(self.main.message)
-
-        self.setupUI()
-        
-    
     def showTableParameters(self ):
         try: 
 
@@ -121,10 +133,6 @@ class MainWindow(QMainWindow):
             QMessageBox.critical(self, "오류", f"쿼리 파라미터를 로드하는 중 오류가 발생했습니다: {str(e)}")
 
    
-
-    def setupUI(self):
-        self.lefttree.attributeChange.connect(self.showTableDetails)
-        self.lefttree.attributeQuery.connect(self.showQueryParameters)
 
     def showTableDetails(self, table_id, table_name, _):
         if not hasattr(self, 'mainList'):
