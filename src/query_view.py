@@ -53,6 +53,14 @@ class QueryView(QWidget):
         self.btn3.setStyleSheet("margin: 0px;")
         button_layout.addWidget(self.btn3)
 
+        self.odata_test_btn = QPushButton('OData Test', self)
+        self.odata_test_btn.setCheckable(True)
+        self.odata_test_btn.toggle()
+        self.odata_test_btn.setFixedSize(100, 30)
+        self.odata_test_btn.clicked.connect(self.odata_test)
+        self.odata_test_btn.setStyleSheet("margin: 0px;")
+        button_layout.addWidget(self.odata_test_btn)
+
         layout.addLayout(button_layout)
         layout.addWidget(self.tableWidget)
         self.setLayout(layout)
@@ -125,6 +133,67 @@ class QueryView(QWidget):
                 QMessageBox.information(self, "No Results", "쿼리에서 반환된 데이터가 없습니다.")
         except Exception as e:
             QMessageBox.critical(self, "Error", f"쿼리 실행 중 오류 발생: {str(e)}")
+
+    def odata_test(self):
+        db = Crud()
+        query_id = int(self.query_id_input.text())
+        query_template = self.query_input.toPlainText()
+
+        # Fetch parameters
+        params = {}
+        query_params = db.whereDB(table="tdx_query_param", column="*", where=f"tdx_query_id={query_id}")
+        for param in query_params:
+            param_name = param['parameter'].lstrip(':')  # Remove leading colon
+            param_value = param['value']
+            params[param_name] = param_value
+
+        # Fetch odata_query_name
+        query_data = db.whereDB(table="tdx_query", column="odata_query_name", where=f"id={query_id}")
+        odata_query_name = query_data[0][0]  # Assuming the first result contains the odata_query_name
+
+        # Construct OData URL
+        odata_url = f"http://localhost:8081/OData/V1.0/{odata_query_name}("
+        odata_url += ",".join([f"{k}={v}" for k, v in params.items()])
+        odata_url += ")"
+
+        # Print the request URL
+        print(f"OData request URL: {odata_url}")
+
+        # Make OData request
+        try:
+            response = requests.get(odata_url)
+            if response.status_code == 200:
+                result = response.json()
+                self.display_results(result['value'])
+            else:
+                QMessageBox.warning(self, "Error", f"OData request failed: {response.text}")
+        except requests.exceptions.RequestException as e:
+            QMessageBox.critical(self, "Error", f"An error occurred: {str(e)}")
+
+    def display_results(self, data):
+        # Assuming data is a list of dictionaries
+        if not data:
+            QMessageBox.information(self, "No Results", "No data returned from the query.")
+            return
+
+        # Get column names from the first item
+        column_names = data[0].keys()
+
+        # Set up the table widget
+        self.tableWidget.setColumnCount(len(column_names))
+        self.tableWidget.setHorizontalHeaderLabels(column_names)
+        self.tableWidget.setRowCount(len(data))
+
+        # Populate the table
+        for row_idx, row_data in enumerate(data):
+            for col_idx, (key, value) in enumerate(row_data.items()):
+                item = QTableWidgetItem(str(value))
+                item.setTextAlignment(Qt.AlignCenter)
+                self.tableWidget.setItem(row_idx, col_idx, item)
+
+        # Show the results in a dialog
+        dialog = QueryResultDialog(data, self)
+        dialog.exec_()
 
     def create_query_popup(self):
         self.query_dialog = QDialog(self)

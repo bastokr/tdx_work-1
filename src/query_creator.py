@@ -14,16 +14,6 @@ class QueryCreator(QDialog):
         self.setFixedSize(500, 600)
         layout = QVBoxLayout()
 
-        #layout.addWidget(QLabel("Name:"))
-        #self.query_name_input = QLineEdit()
-        #layout.addWidget(self.query_name_input)
-
-        # SQL Query Editor
-        #layout.addWidget(QLabel("SQL Query:"))
-        #self.query_input = QTextEdit()
-        #self.query_input.setFixedHeight(200)
-        #layout.addWidget(self.query_input)
-
         # Parameters Section
         params_container = QWidget()
         self.params_layout = QVBoxLayout(params_container)
@@ -45,11 +35,7 @@ class QueryCreator(QDialog):
         button_layout.addWidget(add_param_btn)
         button_layout.addStretch(1)
         layout.addLayout(button_layout)
-         
         
-        
- 
-
         # Save Query Button
         save_query_btn = QPushButton('Save Query')
         save_query_btn.clicked.connect(self.save_query)

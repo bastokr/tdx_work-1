@@ -145,13 +145,9 @@ class MainWindow(QMainWindow):
         self.mainList.message(table_id, table_name, _)
         self.splitter.replaceWidget(1, self.mainList)
 
-    def showQueryDetails(self, query_id, query_name, _):
-        self.queryViewer = QueryView()
-        self.queryViewer.showQueryDetails(query_id)
-        self.splitter.replaceWidget(1, self.queryViewer)
-
     def showQueryParameters(self, query: Query):
         try:
+            print()
             self.queryview = QueryView()
             self.queryCreator = QueryCreator()
             self.splitter.replaceWidget(1, self.queryview)
