@@ -29,22 +29,25 @@ class MainList(QWidget):
         self.label1 = QLabel("테이블명:")
         self.textEdit = QLineEdit()
         
-        self.btn1 = QPushButton('&컬럼추가', self)
+        self.btn1 = QPushButton('&Add Column', self)
         self.btn1.setCheckable(True)
         self.btn1.toggle()
         self.btn1.setFixedSize(100, 30)  # Set fixed size for the button
+        self.btn1.setStyleSheet("margin: 0px;")
         self.btn1.clicked.connect(self.dialog_open)
         
-        self.btn2 = QPushButton('&컬럼삭제', self)
+        self.btn2 = QPushButton('&Delete Column', self)
         self.btn2.setCheckable(True)
         self.btn2.toggle()
         self.btn2.setFixedSize(100, 30)  # Set fixed size for the button
+        self.btn2.setStyleSheet("margin: 0px;")
         self.btn2.clicked.connect(self.delete_row)
 
-        self.btn3 = QPushButton('쿼리 생성', self)
+        self.btn3 = QPushButton('Create Query', self)
         self.btn3.setCheckable(True)
         self.btn3.toggle()
         self.btn3.setFixedSize(100, 30)  # Set fixed size for the button
+        self.btn3.setStyleSheet("margin: 0px;")
         self.btn3.clicked.connect(self.create_query_popup)
 
         self.headerLayer.addWidget(self.label1)
@@ -187,7 +190,7 @@ class MainList(QWidget):
         for i, data in enumerate(result):
             self.tableWidget.setItem(i, 0, QTableWidgetItem(data['parameter']))
             self.tableWidget.setItem(i, 1, QTableWidgetItem(data['attribute']))
-            self.tableWidget.setItem(i, 2, QTableWidgetItem(""))  # 초기 값은 비워둠
+            self.tableWidget.setItem(i, 2, QTableWidgetItem(""))  # 기 값은 비워둠
 
         self.tableWidget.resizeColumnsToContents()
 
@@ -205,4 +208,7 @@ class checkboxItem(QTableWidgetItem):
             return False
         return True
 
+    
+    
+    
     

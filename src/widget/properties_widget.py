@@ -11,6 +11,22 @@ class PropertiesWidget(QWidget):
     def setupUI(self):
         groupBox = QGroupBox("Properties Data")
         groupBoxLayout = QVBoxLayout()
+        groupBox.setStyleSheet("""
+            QGroupBox {
+                font-weight: bold;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                margin-top: 10px;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 14px;
+            }
+            QGroupBox::title {
+                subcontrol-origin: margin;
+                subcontrol-position: top center;
+                padding: 0 3px;
+                background-color: #f0f0f0;
+            }
+        """)
          
 
         # Add different types of input widgets
@@ -59,4 +75,6 @@ class PropertiesWidget(QWidget):
         print(y)  
         self.textEdit1_2.setText(y)
         print(z) 
+ 
+ 
  

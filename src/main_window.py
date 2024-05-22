@@ -45,7 +45,7 @@ class MainWindow(QMainWindow):
     def setupUI(self):
         main_layout = QVBoxLayout()
         hbox_layout = QHBoxLayout()
-        tab_widget = TabWidget()
+        self.tab_widget = TabWidget()
 
         self.splitter = QSplitter(Qt.Horizontal)
         self.splitter.addWidget(self.lefttree)
@@ -59,7 +59,7 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(central_widget)
 
         main_layout.addLayout(hbox_layout)
-        main_layout.addWidget(tab_widget)
+        main_layout.addWidget(self.tab_widget)
 
         self.lefttree.attributeChange.connect(self.properties_widget.message)
         self.lefttree.attributeChange.connect(self.main.message)
@@ -121,6 +121,15 @@ class MainWindow(QMainWindow):
 
         self.lefttree.attributeChange.connect(self.showTableDetails)
         self.lefttree.attributeQuery.connect(self.showQueryParameters)
+
+        self.lefttree.attributeChange.connect(self.properties_widget.message)
+        self.lefttree.attributeChange.connect(self.main.message)
+
+    def toggleTabWidget(self):
+        if self.tab_widget.isVisible():
+            self.tab_widget.hide()
+        else:
+            self.tab_widget.show()
 
     def showTableParameters(self):
         try:
@@ -274,7 +283,61 @@ class MyApp(QApplication):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    app.setStyle("Fusion")
+    app.setStyle(QStyleFactory.create("Fusion"))
+    app.setStyleSheet("""
+        QMainWindow {
+            background-color: #ffffff;
+            color: #333333;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 14px;
+        }
+        QMenuBar {
+            background-color: #f8f8f8;
+            color: #333333;
+            border-bottom: 1px solid #ccc;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 14px;
+        }
+        QMenuBar::item {
+            background-color: #f8f8f8;
+            color: #333333;
+            padding: 5px 10px;
+        }
+        QMenuBar::item:selected {
+            background-color: #e0e0e0;
+        }
+        QTabWidget::pane {
+            border: 1px solid #ccc;
+            background: #f8f8f8;
+        }
+        QTabBar::tab {
+            background: #f8f8f8;
+            color: #333333;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-bottom: none;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 14px;
+        }
+        QTabBar::tab:selected {
+            background: #ffffff;
+            border-color: #ccc;
+        }
+        QPushButton {
+            background-color: #0078d7;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 14px;
+        }
+        QPushButton:hover {
+            background-color: #005a9e;
+        }
+    """)
     palette = QPalette()
     app.setPalette(palette)
 

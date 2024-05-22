@@ -89,7 +89,7 @@ class QueryCreator(QDialog):
         type_input.addItems(data_types)
         value_input = QLineEdit()
         delete_btn = QPushButton("Delete")
-        delete_btn.setStyleSheet("background-color: #4CAF50; color: white; padding: 5px 5px; border: none; border-radius: 2px;")
+        delete_btn.setStyleSheet("background-color: #4CAF50; color: white; padding: 5px 5px; border: none; border-radius: 2px; margin: 0px;")
     
         delete_btn.clicked.connect(lambda: self.remove_parameter(param_widget))
         param_layout.addWidget(name_input)

@@ -19,32 +19,34 @@ class AddColumnWidget(QDialog):
         self.setupUI()
  
     def setupUI(self):
-        groupBox = QGroupBox("테이블 컬럼추가")
+        groupBox = QGroupBox("Add Table Column")
         groupBoxLayout = QVBoxLayout()
         
         # Add different types of input widgets
-        label1 = QLabel("테이블명: "+self.table_nm)
+        label1 = QLabel("Table Name: "+self.table_nm)
         self.tableId = QLineEdit()
         self.tableId.setText(self.table_nm)
         self.tableId.setModified(False)
         self.tableId.setReadOnly(True)
         
 
-        column_nm = QLabel("컬럼명:")
+        column_nm = QLabel("Column Name:")
         self.column_nm = QLineEdit()
 
-        column_type = QLabel("타입:")
+        column_type = QLabel("Type:")
         self.column_type = QLineEdit() 
          
-        btn1 = QPushButton('&컬럼생성', self)
+        btn1 = QPushButton('&Add Column', self)
         btn1.setCheckable(True)
         btn1.toggle()
         btn1.setFixedSize(100, 30)  # Set fixed size for the button
+        btn1.setStyleSheet("margin: 0px;")
         btn1.clicked.connect(self.addTable)
 
         btn2 = QPushButton(self)
-        btn2.setText('닫기&')
+        btn2.setText('Close')
         btn2.setFixedSize(100, 30)  # Set fixed size for the button
+        btn2.setStyleSheet("margin: 0px;")
         btn2.clicked.connect(self.close_dialog)  # Connect clicked signal to close_popup_window method
 
         hbox = QHBoxLayout() 
@@ -91,4 +93,7 @@ class AddColumnWidget(QDialog):
                         column="table_id,name,type",seq=seq_next, data=(table_id,column_nm , column_type))
         
         self.close_dialog()
+        
+        
+        
         

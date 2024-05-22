@@ -30,15 +30,17 @@ class MakeDynamicTableWidget(QDialog):
         label2 = QLabel("설명:")
         self.textDescription = QLineEdit() 
          
-        btn1 = QPushButton('&테이블생성', self)
+        btn1 = QPushButton('&Create Table', self)
         btn1.setCheckable(True)
         btn1.toggle()
         btn1.setFixedSize(100, 30)  # Set fixed size for the button
+        btn1.setStyleSheet("margin: 0px;")  # Remove margin
         btn1.clicked.connect(self.addTable)
 
         btn2 = QPushButton(self)
-        btn2.setText('닫기&2')
+        btn2.setText('Close')
         btn2.setFixedSize(100, 30)  # Set fixed size for the button
+        btn2.setStyleSheet("margin: 0px;")  # Remove margin
         btn2.clicked.connect(self.close_dialog)  # Connect clicked signal to close_popup_window method
 
         hbox = QHBoxLayout() 

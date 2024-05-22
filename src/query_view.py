@@ -33,22 +33,24 @@ class QueryView(QWidget):
         self.tableWidget.setHorizontalHeaderLabels(["선택", "id", "속성", "파라미터", "value"])
         layout.addWidget(self.tableWidget)
 
-        self.btn1 = QPushButton('&테스트', self)
+        self.btn1 = QPushButton('&Test', self)
         self.btn1.setCheckable(True)
         self.btn1.toggle()
         self.btn1.setFixedSize(100, 30)
         self.btn1.clicked.connect(self.test_param_query)
+        self.btn1.setStyleSheet("margin: 0px;")
 
         button_layout = QHBoxLayout()
         button_layout.addStretch(1)
         button_layout.addWidget(self.btn1)
         layout.addLayout(button_layout)
 
-        self.btn3 = QPushButton('등록', self)
+        self.btn3 = QPushButton('Register', self)
         self.btn3.setCheckable(True)
         self.btn3.toggle()
         self.btn3.setFixedSize(100, 30)
         self.btn3.clicked.connect(self.create_query_popup)
+        self.btn3.setStyleSheet("margin: 0px;")
         button_layout.addWidget(self.btn3)
 
         layout.addLayout(button_layout)
