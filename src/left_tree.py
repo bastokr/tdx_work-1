@@ -18,8 +18,8 @@ class LeftTree(QWidget):
         self.setupUI()
 
     def setupUI(self):
+        layout = QVBoxLayout(self)
         self.tree = QTreeWidget(self)
-        self.tree.resize(500, 1000)
         self.tree.setColumnCount(4)
         self.tree.setColumnWidth(0, 250)
         self.tree.setHeaderLabels(["구분", "속성", "id", "구분"])
@@ -32,6 +32,9 @@ class LeftTree(QWidget):
 
         self.tree.itemClicked.connect(self.onItemClicked)
         self.refresh_data()  # 데이터베이스 연결이 설정된 경우 데이터를 로드
+
+        layout.addWidget(self.tree)
+        self.setLayout(layout)
 
     def refresh_data(self):
         self.tree.clear()

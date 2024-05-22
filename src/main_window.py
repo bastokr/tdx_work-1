@@ -23,7 +23,7 @@ from pyqttoast import Toast, ToastPreset
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("TDX platform v0.1")
+        self.setWindowTitle("TDX platform v1.0")
         self.setGeometry(200, 200, 1200, 700)  # x, y, w, h
         self.menubar = self.menuBar()
         self.menubar.setNativeMenuBar(False)
@@ -94,8 +94,6 @@ class MainWindow(QMainWindow):
 
         self.lefttree = LeftTree()
         self.main = MainList()
-        central_widget = QWidget()
-        central_widget.setContentsMargins(0, 0, 0, 0)
         self.splitter = QSplitter(Qt.Horizontal)
         right_widget = QLabel("Layer 2")
         self.lefttree.setGeometry(0, 0, 100, 1000)

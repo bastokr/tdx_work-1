@@ -6,11 +6,11 @@ from PyQt5.QtCore import pyqtSignal
 # 현재 파일의 디렉토리 경로를 추가합니다.
 import os
 current_directory = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(os.path.join(current_directory, '..', '..'))
+sys.path.append(os.path.join(current_directory, '..'))
 
 from lib.crud import Crud
 
-CONFIG_FILE = os.path.join(current_directory, '..', '..', 'config.ini')
+CONFIG_FILE = os.path.join(current_directory, '..', 'config.ini')
 
 
 class DatabaseSettingWidget(QDialog):

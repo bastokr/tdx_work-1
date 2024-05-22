@@ -18,25 +18,13 @@ class MainList(QWidget):
 
     def setupUI(self):
         self.tableWidget = QTableWidget()
-        #self.tableWidget.setRowCount(0)
         self.tableWidget.setColumnCount(4)
-
         self.tableWidget.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        # self.tableWidget.setEditTriggers(QAbstractItemView.DoubleClicked)
-        # self.tableWidget.setEditTriggers(QAbstractItemView.AllEditTriggers)
-        
         self.tableWidget.setHorizontalHeaderLabels(["선택","id", "테이브id","컬럼명","타입"])  
-        #self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.tableWidget.horizontalHeader().resizeSection(0,50)
-        
-        #self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
-
-        #for i in range(20):
-        #    for j in range(4):
-        #        self.tableWidget.setItem(i, j, QTableWidgetItem(str(i+j)))
 
         layout = QVBoxLayout()
-        self.headerLayer = QHBoxLayout();
+        self.headerLayer = QHBoxLayout()
         
         self.label1 = QLabel("테이블명:")
         self.textEdit = QLineEdit()
@@ -60,7 +48,6 @@ class MainList(QWidget):
         self.btn3.clicked.connect(self.create_query_popup)
 
         self.headerLayer.addWidget(self.label1)
-        
         self.headerLayer.addWidget(self.btn1)
         self.headerLayer.addWidget(self.btn2)
         self.headerLayer.addWidget(self.btn3)
