@@ -46,17 +46,20 @@ class MainWindow(QMainWindow):
         main_layout = QVBoxLayout()
         hbox_layout = QHBoxLayout()
         tab_widget = TabWidget()
-        
-        hbox_layout.addWidget(self.lefttree)
-        hbox_layout.addWidget(self.main)
-        hbox_layout.addWidget(self.properties_widget)
 
-        main_layout.addLayout(hbox_layout)
-        main_layout.addWidget(tab_widget)
+        self.splitter = QSplitter(Qt.Horizontal)
+        self.splitter.addWidget(self.lefttree)
+        self.splitter.addWidget(self.main)
+        self.splitter.addWidget(self.properties_widget)
+
+        hbox_layout.addWidget(self.splitter)
 
         central_widget = QWidget()
         central_widget.setLayout(main_layout)
         self.setCentralWidget(central_widget)
+
+        main_layout.addLayout(hbox_layout)
+        main_layout.addWidget(tab_widget)
 
         self.lefttree.attributeChange.connect(self.properties_widget.message)
         self.lefttree.attributeChange.connect(self.main.message)
@@ -65,7 +68,7 @@ class MainWindow(QMainWindow):
         self.menubar.setNativeMenuBar(False)
         self.setContentsMargins(0, 0, 0, 0)
 
-        # file menu action 
+        # file menu action
         self.sapui5_action = QAction("sapui5")
         self.sapui5_action.triggered.connect(self.showSapui5Viewer)
 
@@ -78,31 +81,27 @@ class MainWindow(QMainWindow):
         self.db_settings_action = QAction("DB 설정")
         self.db_settings_action.triggered.connect(self.show_db_settings_dialog)
 
-
         self.table_action = QAction("테이블생성")
         self.table_action.triggered.connect(self.dialog_table_create_open)
         
         self.table_mgt_action = QAction("테이블관리")
         self.table_mgt_action.triggered.connect(self.showTableParameters)
+
         # file menu
         database_menu = self.menubar.addMenu("DataBase")
-        
         database_menu.addAction(self.db_settings_action)
         database_menu.addSeparator()
-
         database_menu.addAction(self.table_action)  
         database_menu.addSeparator()
         database_menu.addAction(self.table_mgt_action)
-        
         database_menu.addSeparator()
         database_menu.addAction(self.quit_action)
- 
-        database_menu = self.menubar.addMenu("SAPUI5")
-        database_menu.addAction(self.sapui5_action) 
 
-        
+        sapui5_menu = self.menubar.addMenu("SAPUI5")
+        sapui5_menu.addAction(self.sapui5_action) 
+
         # help menu
-        help_menu = self.menubar.addMenu("Help")  
+        help_menu = self.menubar.addMenu("Help")
         self.home_action = QAction(QIcon("src/img/home.png"), 'home')
         self.home_action.triggered.connect(self.home)
 
@@ -123,16 +122,13 @@ class MainWindow(QMainWindow):
         self.lefttree.attributeChange.connect(self.showTableDetails)
         self.lefttree.attributeQuery.connect(self.showQueryParameters)
 
-    def showTableParameters(self ):
-        try: 
-
+    def showTableParameters(self):
+        try:
             self.splitter.replaceWidget(1, self.lefttree)
             self.splitter.replaceWidget(1, self.main)
-            self.splitter.replaceWidget(2, self.properties_widget)  
-        except Exception as e:   
+            self.splitter.replaceWidget(2, self.properties_widget)
+        except Exception as e:
             QMessageBox.critical(self, "오류", f"쿼리 파라미터를 로드하는 중 오류가 발생했습니다: {str(e)}")
-
-   
 
     def showTableDetails(self, table_id, table_name, _):
         if not hasattr(self, 'mainList'):
@@ -153,33 +149,29 @@ class MainWindow(QMainWindow):
             self.splitter.replaceWidget(2, self.queryCreator)
             self.queryview.message(query)
             self.queryCreator.default_param(query.id)
-        except Exception as e:   
+        except Exception as e:
             QMessageBox.critical(self, "오류", f"쿼리 파라미터를 로드하는 중 오류가 발생했습니다: {str(e)}")
 
     def showSapui5Viewer(self, query: Query):
         try:
             self.sapui5leftTabView = Sapui5LeftTree()
             self.sapui5MainView = Sapui5MainList()
- 
+
             self.sapui5leftTabView.attributeChange.connect(self.showSapUIQueryParameters)
             self.sapui5leftTabView.attributeQuery.connect(self.showSapUIQueryParameters)
             self.queryCreator = SapUIQueryCreator()
-         
 
             self.splitter.replaceWidget(0, self.sapui5leftTabView)
             self.splitter.replaceWidget(1, self.sapui5MainView)
             self.splitter.replaceWidget(2, self.queryCreator)
             
             self.queryCreator.replaceGrid.connect(self.sapui5MainView.showGrid)
-            #self.queryCreator.default_param(query.id)
-            
-             
         except Exception as e:
             QMessageBox.critical(self, "오류", f"쿼리 파라미터를 로드하는 중 오류가 발생했습니다: {str(e)}")
 
     def showSapUIQueryParameters(self, query: Query):
         try:
-            self.sapui5MainView.default_param(query.id) 
+            self.sapui5MainView.default_param(query.id)
             self.queryCreator.default_param(query.id)
         except Exception as e:
             QMessageBox.critical(self, "오류", f"쿼리 파라미터를 로드하는 중 오류가 발생했습니다: {str(e)}")
@@ -188,8 +180,6 @@ class MainWindow(QMainWindow):
         self.dialog = QDialog()
         self.dialog.setWindowTitle('My Dialog')
         layout = QHBoxLayout(self.dialog)
-
-        preview = QLabel('', self.dialog)
         setting = MakeDynamicTableWidget()
         layout.addWidget(setting)
         self.dialog.setWindowModality(Qt.ApplicationModal)
@@ -205,11 +195,9 @@ class MainWindow(QMainWindow):
 
     def setting(self):
         print('setting toolbar clicked')
-    
-    
 
     def home(self):
-        print('setting toolbar clicked')
+        print('home toolbar clicked')
         self.showTableParameters()
 
     def envelope(self):
@@ -235,15 +223,15 @@ class MainWindow(QMainWindow):
         self.db.set_settings(settings)
     
         # Show a custom Snackbar instead of a QMessageBox
-        self.show_toast("TDX message","Database settings saved successfully.")  # Create a Snackbar instance
+        self.show_toast("TDX message", "Database settings saved successfully.")
          
         self.lefttree.db.set_settings(settings)  # LeftTree에 데이터베이스 설정 전달
         self.lefttree.refresh_data()  # 데이터베이스 설정 후 데이터를 갱신
     
-        # Shows a toast notification every time the button is clicked
-    def show_toast(self,title,message):
+    # Shows a toast notification every time the button is clicked
+    def show_toast(self, title, message):
         toast = Toast(self)
-        toast.setDuration(2000)  # Hide after 5 seconds
+        toast.setDuration(2000)  # Hide after 2 seconds
         toast.setTitle(title)
         toast.setText(message)
         toast.applyPreset(ToastPreset.SUCCESS)  # Apply style preset
@@ -251,11 +239,8 @@ class MainWindow(QMainWindow):
 
     def load_db_config(self):
         import os
-        
 
-        # 현재 스크립트의 디렉토리 가져오기
         script_dir = os.path.dirname(os.path.abspath(__file__))
-        # config.ini 파일의 절대 경로 생성
         config_path = os.path.join(script_dir, 'config.ini')
         abs_config_path = os.path.abspath(config_path)
         print(f"Loading configuration from: {abs_config_path}")
@@ -286,7 +271,6 @@ class MainWindow(QMainWindow):
 class MyApp(QApplication):
     def applicationSupportsSecureRestorableState(self):
         return True
-
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
