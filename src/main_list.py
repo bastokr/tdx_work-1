@@ -81,25 +81,12 @@ class MainList(QWidget):
           
         for i, data in enumerate(self.result):
             item = checkboxItem()
-
-           
-             
             item.setFlags(Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
             item.setCheckState(Qt.CheckState.Unchecked)
             item.setData(Qt.UserRole, item.checkState())
             item.setTextAlignment(Qt.AlignCenter)
 
-            #checklayer.addItem(item)
-            #checklayer.setAlignment(Qt.AlignCenter)
-            #cellWidget.setLayout(checklayer)
-
-            #item.setTextAlignment( Qt.AlignCenter)
-
-
             self.tableWidget.setItem(i, 0, item)
-            
-            
- 
             for j, value in enumerate(data):
                 item = QTableWidgetItem(str(value))
                 item.setTextAlignment( Qt.AlignCenter)
@@ -108,8 +95,6 @@ class MainList(QWidget):
             
             self.tableWidget.cellChanged.connect(self.onCellChanged)
                 
-                
-     
     def dialog_open(self):
         self.dialog  = QDialog()
         self.dialog.setWindowTitle('칼럼추가')
@@ -131,9 +116,7 @@ class MainList(QWidget):
         
     # Dialog 닫기 이벤트
     def dialog_close(self):
-        self.dialog.close() 
-
-    # https://freeprog.tistory.com/333 샘플 소스
+        self.dialog.close()
         
     def onCellChanged(self, row, column):
        
@@ -169,10 +152,6 @@ class MainList(QWidget):
             
 
     def delete_row(self):
-        #db = CRUD() 
-        #db.deleteDB()     
-        #self.tableWidget.selectRow
-        #db.deleteDB(  table='tdx_column', condition="id != '"++"'")
         selected_row = self.tableWidget.currentRow()
         if selected_row >= 0:
             self.tableWidget.removeRow(selected_row)
