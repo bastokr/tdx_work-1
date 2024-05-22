@@ -1,3 +1,4 @@
+import ctypes
 from lib.databases import Databases
 import psycopg2
 import psycopg2.extras  # psycopg2.extras 모듈을 임포트
@@ -108,9 +109,20 @@ class Crud(Databases):
 
     def test_connection(self, settings):
         try:
+            print("test_connection")
+            settings['connect_timeout'] = 3  # 3초 타임아웃 설정
             conn = psycopg2.connect(**settings)
             conn.close()
             return True
+        except psycopg2.OperationalError as e:
+            if 'timeout expired' in str(e):
+                message = "데이터베이스 연결 시간 초과. 데이터베이스에 연결할 수 없습니다."
+            else:
+                message = f"Connection test failed: {e}"
+            print(message)
+            ctypes.windll.user32.MessageBoxW(0, message, "Database Connection Error", 0x10)
+            return False
         except Exception as e:
-            print("Connection test failed:", e)
+            message = f"Connection test failed: {e}"
+            print(message)
             return False

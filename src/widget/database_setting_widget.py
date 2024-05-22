@@ -26,6 +26,7 @@ class DatabaseSettingWidget(QDialog):
         self.config.read(CONFIG_FILE)
         if not self.config.has_section('Database'):
             self.config.add_section('Database')
+            return
         self.host = self.config.get('Database', 'host', fallback='')
         self.dbname = self.config.get('Database', 'dbname', fallback='')
         self.user = self.config.get('Database', 'user', fallback='')
@@ -109,9 +110,6 @@ class DatabaseSettingWidget(QDialog):
             # 연결 성공
             self.closeDialog.emit(settings)
             self.close()
-        else:
-            # 연결 실패
-            QMessageBox.critical(self, "Connection Failed", "Failed to connect to the database with the provided settings.")
 
 if __name__ == "__main__":
     from PyQt5.QtWidgets import QApplication
