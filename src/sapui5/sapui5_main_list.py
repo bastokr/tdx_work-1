@@ -27,7 +27,6 @@ class Sapui5MainList(QWidget):
         self.gridView = GridWindow()
 
         self.webView.show()
-        tab2 = QWidget()
 
         tabs = QTabWidget()
         tabs.addTab(self.gridView, '테이블')

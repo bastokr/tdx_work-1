@@ -10,11 +10,10 @@ import xml.dom.minidom
 
 from lib.crud import Crud
 
-
 class GridWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.tableWidget = QTableWidget();
+        self.tableWidget = QTableWidget()
 
         self.setWindowTitle("PyQt5 Code Viewer and Executor")
         self.setGeometry(100, 100, 800, 600)
@@ -38,7 +37,7 @@ class GridWindow(QMainWindow):
         # self.tableWidget.setEditTriggers(QAbstractItemView.DoubleClicked)
         # self.tableWidget.setEditTriggers(QAbstractItemView.AllEditTriggers)
         
-        self.tableWidget.setHorizontalHeaderLabels(["선택","id", "테이브id","컬럼명","타입"])  
+        self.tableWidget.setHorizontalHeaderLabels(["선택","id", "테이블id","컬럼명","타입"])  
         #self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.tableWidget.horizontalHeader().resizeSection(0,50)
         

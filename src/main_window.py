@@ -61,8 +61,7 @@ class MainWindow(QMainWindow):
         main_layout.addLayout(hbox_layout)
         main_layout.addWidget(self.tab_widget)
 
-        self.lefttree.attributeChange.connect(self.properties_widget.message)
-        self.lefttree.attributeChange.connect(self.main.message)
+
 
         self.menubar = self.menuBar()
         self.menubar.setNativeMenuBar(False)
@@ -161,11 +160,11 @@ class MainWindow(QMainWindow):
         try:
             self.sapui5leftTabView = Sapui5LeftTree()
             self.sapui5MainView = Sapui5MainList()
+            self.queryCreator = SapUIQueryCreator()
 
             self.sapui5leftTabView.attributeChange.connect(self.showSapUIQueryParameters)
             self.sapui5leftTabView.attributeQuery.connect(self.showSapUIQueryParameters)
-            self.queryCreator = SapUIQueryCreator()
-
+            
             self.splitter.replaceWidget(0, self.sapui5leftTabView)
             self.splitter.replaceWidget(1, self.sapui5MainView)
             self.splitter.replaceWidget(2, self.queryCreator)

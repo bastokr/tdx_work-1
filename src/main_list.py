@@ -20,7 +20,7 @@ class MainList(QWidget):
         self.tableWidget = QTableWidget()
         self.tableWidget.setColumnCount(4)
         self.tableWidget.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        self.tableWidget.setHorizontalHeaderLabels(["선택","id", "테이브id","컬럼명","타입"])  
+        self.tableWidget.setHorizontalHeaderLabels(["선택","id", "테이블id","컬럼명","타입"])  
         self.tableWidget.horizontalHeader().resizeSection(0,50)
 
         layout = QVBoxLayout()
