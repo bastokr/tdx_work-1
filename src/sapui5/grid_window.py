@@ -7,7 +7,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont
 import xml.etree.ElementTree as ET
 import xml.dom.minidom
-
+from PyQt5 import QtCore
 from lib.crud import Crud
 
 class GridWindow(QMainWindow):
@@ -84,10 +84,6 @@ class GridWindow(QMainWindow):
 
             if (len(colnames)==1): 
                 self.tableWidget.setColumnWidth(0, 300)  # 첫 번째 열의 너비를 100 픽셀로 설정
-
-              
-        
-        
             for i, data in enumerate(self.result): 
                 
                 for j, value in enumerate(data):
@@ -110,8 +106,12 @@ class GridWindow(QMainWindow):
             print("An error occurred:", e)
             
   
-        
+    def updateGrid(self, table_id, table_name):
+        query_text = f"SELECT * FROM {table_name} WHERE id={table_id}"
+        self.showGrid(query_text)
 
- 
-# Column을 추가할 수 있도록 xml_string1을 업데이트합니다.
- 
+    @QtCore.pyqtSlot(int, str, str)
+    def handleAttributeChange(self, id, name, attribute):
+        print(f"ID: {id}, Name: {name}, Attribute: {attribute}")
+        # Assuming you have a method to update the grid based on table_id
+        self.updateGrid(id, name)

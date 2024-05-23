@@ -75,6 +75,5 @@ class Sapui5LeftTree(QWidget):
             self.attributeChange.emit(int(it.text(2)), it.text(0), it.text(1))
         elif itemType == 'query':
             query_id = int(it.text(2))
-            query = Query(id=query_id, http_request=it.text(1), odata_query_name=it.text(0), query=it.text(3), title=it.text(4))
+            query = Query(id=str(query_id), http_request=it.text(1), odata_query_name=it.text(0), query=it.text(3), title=it.text(4))
             self.attributeQuery.emit(query)
-

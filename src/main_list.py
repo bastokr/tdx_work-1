@@ -72,8 +72,8 @@ class MainList(QWidget):
  
     def gridinit(self,table_id:object,table_nm:object):
         db = Crud()
-        self.table_id = table_id;
-        self.table_nm = table_nm;
+        self.table_id = table_id
+        self.table_nm = table_nm
         self.result = db.whereDB( table="tdx_column", column="*" , where ="table_id='"+str(table_id)+"'")
         i =0
         #result.count

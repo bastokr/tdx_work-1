@@ -162,7 +162,7 @@ class MainWindow(QMainWindow):
             self.sapui5MainView = Sapui5MainList()
             self.queryCreator = SapUIQueryCreator()
 
-            self.sapui5leftTabView.attributeChange.connect(self.showSapUIQueryParameters)
+            self.sapui5leftTabView.attributeChange.connect(self.sapui5MainView.gridView.handleAttributeChange)
             self.sapui5leftTabView.attributeQuery.connect(self.showSapUIQueryParameters)
             
             self.splitter.replaceWidget(0, self.sapui5leftTabView)
