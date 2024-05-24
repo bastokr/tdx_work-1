@@ -23,17 +23,17 @@ import platform
 import subprocess
 
 def is_macos_dark_mode():
-    try:
-        os_system = platform.system()
-        print(os_system)
-        result = subprocess.run(
-            ['defaults', 'read', '-g', 'AppleInterfaceStyle'],
-            capture_output=True,
-            text=True
-        )
-        return 'Dark' in result.stdout
-    except subprocess.CalledProcessError:
-        return False
+    if platform.system() == 'Darwin':
+        try:
+            result = subprocess.run(
+                ['defaults', 'read', '-g', 'AppleInterfaceStyle'],
+                capture_output=True,
+                text=True
+            )
+            return 'Dark' in result.stdout
+        except subprocess.CalledProcessError:
+            return False
+    return False  # Return False for non-macOS systems
     
 class MainWindow(QMainWindow):
     def __init__(self):
