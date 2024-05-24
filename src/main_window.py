@@ -19,7 +19,19 @@ from widget.database_setting_widget import DatabaseSettingWidget
 from lib.crud import Crud
 from pyqttoast import Toast, ToastPreset
 from tab_widget import TabWidget
+import subprocess
 
+def is_macos_dark_mode():
+    try:
+        result = subprocess.run(
+            ['defaults', 'read', '-g', 'AppleInterfaceStyle'],
+            capture_output=True,
+            text=True
+        )
+        return 'Dark' in result.stdout
+    except subprocess.CalledProcessError:
+        return False
+    
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -279,7 +291,10 @@ class MyApp(QApplication):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     app.setStyle(QStyleFactory.create("Fusion"))
-    app.setStyleSheet("""
+    if is_macos_dark_mode():
+        print("is Dark")
+
+    else: app.setStyleSheet("""
         QMainWindow {
             background-color: #ffffff;
             color: #333333;
