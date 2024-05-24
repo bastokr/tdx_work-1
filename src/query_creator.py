@@ -59,7 +59,7 @@ class QueryCreator(QDialog):
 
     def add_parameter(self,colname,datatype):
         param_widget = QWidget()
-        param_widget.setStyleSheet("color: white; padding: 4px 4px 4px 4px; border: none; border-radius: 1px;")  # Remove border
+        param_widget.setStyleSheet(" padding: 4px 4px 4px 4px; border: none; border-radius: 1px;")  # Remove border
          
         param_layout = QHBoxLayout(param_widget)
         name_input = QLineEdit()
