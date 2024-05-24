@@ -74,7 +74,7 @@ class GridWindow(QMainWindow):
     def showGrid(self,query_text):
         print(query_text)
         db = Crud()
-        self.id = id; 
+        self.id = id
         try:
             self.result , colnames = db.execute(query_text,return_column_names=True)
             self.tableWidget.clear()
