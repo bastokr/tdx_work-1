@@ -55,6 +55,7 @@ class Sapui5MainList(QWidget):
         
     def showGrid(self,str):
         self.gridView.showGrid(str)
+        self.codeView.showCode(str)
 
 
 if __name__ == "__main__":

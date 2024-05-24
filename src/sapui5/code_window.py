@@ -64,19 +64,12 @@ class CodeWindow(QMainWindow):
         self.result , colnames = db.whereDB( table="tdx_query_param", column="*" , where ="tdx_query_id='"+id+"'",return_column_names=True)
         i =0
       #result.count
-        
-        for i, data in enumerate(self.result):
-            print(data[2])
+        colms = ""
+        for i, data in enumerate(self.result): 
             #self.add_parameter(data[2], data[1])
-            
-            colm = '''<Column width="11rem">
-						<m:Label text="Product Name" />
-						<template>
-							<m:Text text="{ }" wrapping="false" />
-						</template>
-                    </Column>''' 
-                    
-            self.file_content = self.file_content.replace("[columnData]", colm)
+             
+             
+            #self.file_content = self.file_content.replace("[columnData]", colms)
             self.code_editor.setText(self.file_content)
 
 
@@ -84,7 +77,35 @@ class CodeWindow(QMainWindow):
 
     
         
-         
+    def showCode(self,query_text):
+        print(query_text)
+        db = Crud()
+        self.id = id
+        try:
+            self.result , colnames = db.execute(query_text,return_column_names=True)
+            
+                
+            colms = ""
+            for i, data in enumerate(colnames): 
+            #self.add_parameter(data[2], data[1])
+            
+                colm = '''<Column width="11rem">
+						<m:Label text="'''+data+''''" />
+						<template>
+							<m:Text text="{data}" wrapping="false" />
+						</template>
+                    </Column>''' 
+            
+                colms =colms +colm        
+                    
+            self.file_content = self.file_content.replace("[columnData]", colms)
+            self.code_editor.setText(self.file_content)
+
+                #self.tableWidget.cellChanged.connect(self.onCellChanged)
+        except Exception as e:
+            QMessageBox.critical(self, "오류", f"쿼리 파라미터를 로드하는 중 오류가 발생했습니다: {str(e)}")
+
+    
 
     def execute_code(self):
         code = self.code_editor.toPlainText()

@@ -19,10 +19,13 @@ from widget.database_setting_widget import DatabaseSettingWidget
 from lib.crud import Crud
 from pyqttoast import Toast, ToastPreset
 from tab_widget import TabWidget
+import platform
 import subprocess
 
 def is_macos_dark_mode():
     try:
+        os_system = platform.system()
+        print(os_system)
         result = subprocess.run(
             ['defaults', 'read', '-g', 'AppleInterfaceStyle'],
             capture_output=True,
@@ -182,6 +185,9 @@ class MainWindow(QMainWindow):
             self.splitter.replaceWidget(2, self.queryCreator)
             
             self.queryCreator.replaceGrid.connect(self.sapui5MainView.showGrid)
+            #self.queryCreator.replaceGrid.connect(self.)
+            
+            
         except Exception as e:
             QMessageBox.critical(self, "오류", f"쿼리 파라미터를 로드하는 중 오류가 발생했습니다: {str(e)}")
 
